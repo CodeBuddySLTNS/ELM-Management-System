@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <link rel="stylesheet" href="/css/index.css">
+  
+  <!-- FontAwesome icons -->
+  <script src="https://kit.fontawesome.com/17d86c0acc.js" crossorigin="anonymous"></script>
+  <title>E-Book System</title>
+</head>
+<body class="uploadBody">
+  <div class="container">
+    <div class="header">
+      <div class="schoolHeader">
+        <img src="/images/paclogo.png" alt="logo">
+        <div class="lgTitle">
+          <h2>Philippine Advent College, Inc. - Salug Campus</h2>
+          <p>E-Learning Materials</p>
+        </div>
+        <div class="smTitle">
+          <h2>PAC, Inc. - Salug Campus</h2>
+          <p>E-Learning Materials</p>
+        </div>
+      </div>
+      <div class="user menuBtn">
+        <i class="fa-solid fa-burger"></i>
+      </div>
+<<<<<<< HEAD
+      <div class="lgUser userImg">
+        <div class="lgUserInfo">
+          <div class="infos">
+            <div class="profile">
+              <div class="userImg"></div>
+              <div class="info">
+                <p class="userName"></p>
+                <span class="studentCourse"></span>
+              </div>
+            </div>
+            <button class="">
+              <i class="fa-brands fa-xing lgCloseMenu"></i>
+            </button>
+          </div>
+          <div class="logoutBox">
+            <div class="logout">
+              <button class="logoutBtn">Logout</button>
+            </div>
+            <div class="credits">
+              <p>Developed by: Renz (⁠ ⁠ꈍ⁠ᴗ⁠ꈍ⁠)⁠◜⁠✧</p>
+            </div>
+          </div>
+        </div>
+      </div>
+=======
+>>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
+    </div>
+    <div class="navigation">
+      <div class="navbar">
+        <button class="closeMenu">
+          <i class="fa-brands fa-xing"></i>
+        </button>
+        <a href="/">
+          <li>
+            <i class="fa-solid fa-home"></i>
+            <p>Home</p>
+          </li>
+        </a>
+        <a href="/files/upload">
+          <li>
+            <i class="fa-solid fa-upload"></i>
+            <p>Upload Files</p>
+          </li>
+        </a>
+      </div>
+    </div>
+    <div class="contents">
+      <div class="uploadContainer">
+        <form class="uploadForm">
+          <h3>Upload files</h3>
+          <div class="uploadInputs">
+            <label>
+              Filename (Optional):
+              <br />
+              <input class="fileName" type="text" />
+            </label>
+            <div class="uploadType">
+              <p>Upload type:</p>
+              <div class="types">
+                <label>
+                  <input type="radio" value="single"/>
+                  Single
+                </label>
+                <label>
+                  <input type="radio" value="multiple"/>
+                  Multiple
+                </label>
+              </div>
+            </div>
+            <label>
+              Category:
+              <br />
+              <input type="text" />
+            </label>
+            <label>
+              Department:
+              <br />
+              <input type="text" />
+            </label>
+            <label>
+              Files:
+              <br />
+              <input class="files" type="file" multiple="true"/>
+            </label>
+          </div>
+          <button type="submit">Upload</button>
+        </form>
+      </div>
+      <a href="test">test</a>
+    </div>
+  </div>
+  
+  <script src="/script/index.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.5/axios.min.js"></script>
+  <script>
+    const uploadTypes = document.querySelectorAll('input[type="radio"]');
+    const fileName = document.querySelector('.fileName');
+    for (uploadType of uploadTypes){
+      uploadType.onclick = (event) => {
+        for (typeValue of uploadTypes){
+          if (event.target.value == typeValue.value) continue;
+          typeValue.value == 'multiple' ? fileName.disabled = false : fileName.disabled = true;
+          typeValue.checked = false;
+        }
+      }
+    }
+    
+    document.querySelector('.uploadForm').onsubmit = (event) => {
+      event.preventDefault();
+      let uploadType;
+      for (type of uploadTypes) if (type.checked) uploadType = type.value;
+      console.log(uploadType);
+      
+      const filesToUpload = document.querySelector('.files');
+      const formData = new FormData();
+      
+      if (filesToUpload.files.length > 1) {
+        console.log(filesToUpload.files)
+        for (file of filesToUpload.files) {
+          formData.append('pdfFiles', file);
+        }
+      } else {
+        formData.append('pdfFiles', filesToUpload.files[0]);
+      }
+      
+      axios.post('/files/upload', formData)
+    }
+  </script>
+</body>
+</html>

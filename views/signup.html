@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/css/index.css">
+
+  <!-- FontAwesome icons -->
+  <script src="https://kit.fontawesome.com/17d86c0acc.js" crossorigin="anonymous"></script>
+  <title>Signup | PAC, Inc - Salug Campus</title>
+</head>
+<body>
+  <div class="login">
+    <div class="loginLogo">
+      <img src="/images/paclogo.png" alt="logo">
+    </div>
+    <div class="loginFormContainer">
+      <form class="signupForm" name="signupForm">
+        <div class="formLogo">
+          <img src="/images/paclogo.png" alt="logo">
+        </div>
+        <div class="loginTitle">
+          <h1>Create account</h1>
+        </div>
+        <div class="inputs">
+          <div class="fullNameInput">
+            <div class="inputField">
+              <label>
+                First Name:
+                <input class="firstName" type="text">
+              </label>
+              <p class="firstNameError"></p>
+            </div>
+            <div class="inputField">
+              <label>
+                Middle Name:
+                <input class="middleName" type="text">
+              </label>
+              <p class="middleNameError"></p>
+            </div>
+            <div class="inputField">
+              <label>
+                Last Name:
+                <input class="lastName" type="text">
+              </label>
+              <p class="lastNameError"></p>
+            </div>
+          </div>
+          <div class="twoColumn">
+            <div class="inputField">
+              <label>
+                Username:
+                <input class="username" type="text">
+              </label>
+              <p class="usernameError"></p>
+            </div>
+            <div class="inputField">
+              <label>
+                Email:
+                <input class="email" type="email">
+              </label>
+              <p class="emailError"></p>
+            </div>
+          </div>
+          <div class="twoColumn">
+            <div class="inputField">
+              <label>
+                Password:
+                <input class="password" type="password">
+              </label>
+              <p class="passwordError"></p>
+            </div>
+            <div class="inputField">
+              <label>
+                Confirm Password:
+                <input class="confirmPassword" type="password">
+              </label>
+              <p class="confirmPasswordError"></p>
+            </div>
+          </div>
+          <div class="twoColumn">
+            <div class="inputField">
+              <label>
+                Year Level:
+                <input class="yearLevel" type="number">
+              </label>
+              <p class="yearLevelError"></p>
+            </div>
+            <div class="inputField">
+              <label>
+                Department:
+                <select class="department">
+                  <option value="" selected="true" disabled="true">Select department...</option>
+                  <option value="BSIT | Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
+                </select>
+              </label>
+              <p class="departmentError"></p>
+            </div>
+          </div>
+          <div class="inputField">
+            <label>
+              Profile Picture(optional):
+              <input class="profileImg" type="file">
+            </label>
+          </div>
+        </div>
+        <button class="signupBtn">Sign in</button>
+        <div class="newAccount">
+          <p>Already have an account? <a href="/auth/login">Login</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.5/axios.min.js"></script>
+  <script>
+    const firstName = document.querySelector('.firstName');
+    const middleName = document.querySelector('.middleName');
+    const lastName = document.querySelector('.lastName');
+    const department = document.querySelector('.department');
+    const email = document.querySelector('.email');
+    const yearLevel = document.querySelector('.yearLevel');
+    const username = document.querySelector('.username');
+    const password = document.querySelector('.password');
+    const confirmPassword = document.querySelector('.confirmPassword');
+    const profileImg = document.querySelector('.profileImg');
+    const form = document.querySelector('form');
+    
+    const validateInputs = () => {
+      let isError = false;
+      firstName.value.trim() === "" ?
+        (isError = true, document.querySelector('.firstNameError').innerText = "First name is required.") :
+        document.querySelector('.firstNameError').innerText = "";
+      middleName.value.trim() === "" ?
+        ( isError = true, document.querySelector('.middleNameError').textContent = "Middle name is required.") :
+        document.querySelector('.middleNameError').textContent = "";
+      lastName.value.trim() === "" ?
+        ( isError = true, document.querySelector('.lastNameError').textContent = "Last name is required.") :
+        document.querySelector('.lastNameError').textContent = "";
+      department.value.trim() === "" ?
+        ( isError = true, document.querySelector('.departmentError').textContent = "Department is required.") :
+        document.querySelector('.departmentError').textContent = "";
+      yearLevel.value.trim() === "" ?
+        ( isError = true, document.querySelector('.yearLevelError').textContent = "Year Level is required.") :
+        document.querySelector('.yearLevelError').textContent = "";
+      email.value.trim() === "" ?
+        ( isError = true, document.querySelector('.emailError').textContent = "Email is required.") :
+        document.querySelector('.emailError').textContent = "";
+      username.value.trim() === "" ?
+        ( isError = true, document.querySelector('.usernameError').textContent = "Username is required.") :
+        document.querySelector('.usernameError').textContent = "";
+      password.value.trim() === "" ?
+        ( isError = true, document.querySelector('.passwordError').textContent = "Password is required.") :
+        document.querySelector('.passwordError').textContent = "";
+      password.value.trim() !== confirmPassword.value.trim() ?
+        ( isError = true, document.querySelector('.confirmPasswordError').textContent = "Password didn't match.") :
+        document.querySelector('.confirmPasswordError').textContent = "";
+      return isError;
+    }
+    
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      form.addEventListener('change', () => validateInputs());
+      
+      const validationErrors = validateInputs();
+      
+      if (validationErrors) return;
+      
+      document.querySelector('.signupBtn').disabled = 'true';
+      document.querySelector('.signupBtn').innerText = 'Signing in...';
+      
+      const formData = new FormData();
+      const userData = {
+        fullName: `${firstName.value.trim()} ${middleName.value.trim()} ${lastName.value.trim()}`,
+        firstName: firstName.value.trim(),
+        middleName: middleName.value.trim(),
+        lastName: lastName.value.trim(),
+        yearLevel: Number(yearLevel.value.trim()),
+        department: department.value.trim(),
+        email: email.value.trim(),
+        username: username.value.trim(),
+        password: password.value.trim(),
+      }
+      const keys = Object.keys(userData);
+      
+      for (key of keys) {
+        formData.append(key, userData[key]);
+      }
+      
+      if (profileImg.files.length > 0) {
+        formData.append('profileImg', profileImg.files[0]);
+      }
+      
+      try {
+        const {data} = await axios.post('/auth/signup', formData);
+        if (data.loggedIn) window.location.href = '/'; // redirect to homepage once logged in
+      } catch (e) {
+        alert('Error: Your account name or username already exist in our database. Please try to change it labyo.')
+        console.log(e);
+        document.querySelector('.signupBtn').disabled = '';
+        document.querySelector('.signupBtn').innerText = 'Sign in';
+      }
+    }
+  </script>
+</body>
+</html>

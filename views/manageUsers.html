@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  
+  <!-- BootStrap styles -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.dataTables.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.11/css/dataTables.bootstrap5.min.css">
+  
+  <link rel="stylesheet" href="/css/index.css">
+  
+  <!-- FontAwesome icons -->
+  <script src="https://kit.fontawesome.com/17d86c0acc.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@accusoft/pdf-viewer@3/bundle.js"></script>
+  <title>E-Book System</title>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="schoolHeader">
+        <img src="/images/paclogo.png" alt="logo">
+        <div class="lgTitle">
+          <h2>Philippine Advent College, Inc. - Salug Campus</h2>
+          <p>E-Learning Materials</p>
+        </div>
+        <div class="smTitle">
+          <h2>PAC, Inc. - Salug Campus</h2>
+          <p>E-Learning Materials</p>
+        </div>
+      </div>
+      <div class="user menuBtn">
+        <i class="fa-solid fa-burger"></i>
+      </div>
+      <div class="lgUser userImg">
+        <div class="lgUserInfo">
+          <div class="infos">
+            <div class="profile">
+              <div class="userImg"></div>
+              <div class="info">
+                <p class="userName"></p>
+                <span class="studentCourse"></span>
+              </div>
+            </div>
+            <button class="">
+              <i class="fa-brands fa-xing lgCloseMenu"></i>
+            </button>
+          </div>
+          <div class="logoutBox">
+            <div class="logout">
+              <button class="logoutBtn">Logout</button>
+            </div>
+            <div class="credits">
+              <p>Developed by: Renz (⁠ ⁠ꈍ⁠ᴗ⁠ꈍ⁠)⁠◜⁠✧</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="navigation">
+      <div class="navbar">
+        <div class="userInfo">
+          <div class="profile">
+            <div class="userImg"></div>
+            <div class="info">
+              <p class="userName"></p>
+              <span class="studentCourse"></span>
+            </div>
+          </div>
+          <button class="closeMenu">
+            <i class="fa-brands fa-xing"></i>
+          </button>
+        </div>
+        <a href="/">
+          <li>
+            <i class="fa-solid fa-home"></i>
+            <p>Home</p>
+          </li>
+        </a>
+        <a href="/files/upload">
+          <li>
+            <i class="fa-solid fa-upload"></i>
+            <p>Upload Files</p>
+          </li>
+        </a>
+        <div class="navbarFooter">
+          <div class="logout">
+            <button class="logoutBtn">Logout</button>
+          </div>
+          <div class="credits">
+            <p>Developed by: Renz (⁠ ⁠ꈍ⁠ᴗ⁠ꈍ⁠)⁠◜⁠✧</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contents manageUsers">
+      <div class="dataContainer">
+        <table id="datatable" class="datatable display nowrap">
+          <thead>
+              <tr>
+                  <th>Name</th>
+                  <th>Year Level</th>
+                  <th>Department</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>isVerified</th>
+                  <th>Actions</th>
+              </tr>
+          </thead>
+          <tbody class="users">
+            
+<tr>
+    <td>Renz Malayan Cole</td>
+    <td>1</td>
+    <td>BSIT</td>
+    <td>Justcleo</td>
+    <td>cleo@gmail.com</td>
+    <td>Admin</td>
+    <td>true</td>
+    <td>
+      <button onclick="verifyAccount(this)">verify</button>
+    </td>
+</tr>
+
+          </tbody>
+        </table>
+        <div class="loader"></div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.5/axios.min.js"></script>
+  <script src="/script/index.js"></script>
+  <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+    const usersTableBody = document.querySelector('.users');
+    const datatable = document.querySelector('.datatable');
+    
+    window.addEventListener("load", () => fetchUsers())
+    
+    async function fetchUsers() {
+      try {
+        const {data:users} = await axios.get('/admin/manage/?data="true"');
+        for (user of users) {
+          usersTableBody.innerHTML += `
+          <tr>
+            <td>${user.fullName}</td>
+            <td>${user.yearLevel}</td>
+            <td>${user.department.split('|')[0].trim()}</td>
+            <td>${user.username}</td>
+            <td>${user.email}</td>
+            <td>${user.role}</td>
+            <td>${user.isVerified}</td>
+            <td>
+              <button ${user.isVerified ? 'disabled="true"' : ''} onclick="verifyAccount(this)">${user.isVerified ? 'verified' : 'verify'}</button>
+            </td>
+        </tr>`
+        }
+        document.querySelector('.loader').style.display = 'none';
+        datatable.style.display = 'block';
+        new DataTable('#datatable', {
+          columnDefs: [
+            {className: "dt-center", targets: "_all"}
+          ]
+        });
+      } catch (e) {
+        alert(e)
+        document.querySelector('.loader').style.display = 'none';
+        datatable.style.display = 'block';
+        new DataTable('#datatable', {
+          columnDefs: [
+            {className: "dt-center", targets: "_all"}
+          ]
+        });
+      }
+    }
+    async function verifyAccount(event){
+      const username = event.parentElement.parentElement.childNodes[7].textContent;
+      event.textContent = 'verifying...';
+      try{
+        const {data} = await axios.patch('/admin/manage/verify', {username});
+        alert(`${event.parentElement.parentElement.childNodes[1].textContent} verified successfully.`);
+        event.textContent = 'verified';
+      } catch (e) {
+        alert(`Unable to verify ${event.parentElement.parentElement.childNodes[1].textContent}`);
+        event.textContent = 'verify';
+        console.log(e);
+      }
+    }
+  </script>
+</body>
+</html>

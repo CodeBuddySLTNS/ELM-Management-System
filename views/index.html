@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <link rel="stylesheet" href="/css/index.css">
+  
+  <!-- FontAwesome icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>E-Book System</title>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="schoolHeader">
+        <img src="/images/paclogo.png" alt="logo">
+        <div class="lgTitle">
+          <h2>Philippine Advent College, Inc. - Salug Campus</h2>
+          <p>E-Learning Materials</p>
+        </div>
+        <div class="smTitle">
+          <h2>PAC, Inc. - Salug Campus</h2>
+          <p>E-Learning Materials</p>
+        </div>
+      </div>
+      <div class="user menuBtn">
+        <i class="fa-solid fa-burger"></i>
+      </div>
+<<<<<<< HEAD
+      <div class="lgUser userImg">
+        <div class="lgUserInfo">
+          <div class="infos">
+            <div class="profile">
+              <div class="userImg"></div>
+              <div class="info">
+                <p class="userName"></p>
+                <span class="studentCourse"></span>
+              </div>
+            </div>
+            <button class="">
+              <i class="fa-brands fa-xing lgCloseMenu"></i>
+            </button>
+          </div>
+          <div class="logoutBox">
+            <div class="logout">
+              <button class="logoutBtn">Logout</button>
+            </div>
+            <div class="credits">
+              <p>Developed by: Renz (⁠ ⁠ꈍ⁠ᴗ⁠ꈍ⁠)⁠◜⁠✧</p>
+            </div>
+          </div>
+        </div>
+      </div>
+=======
+>>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
+    </div>
+    <div class="navigation">
+      <div class="navbar">
+        <button class="closeMenu">
+          <i class="fa-brands fa-xing"></i>
+        </button>
+        <a href="/">
+          <li>
+            <i class="fa-solid fa-home"></i>
+            <p>Home</p>
+          </li>
+        </a>
+        <a href="/files/upload">
+          <li>
+            <i class="fa-solid fa-upload"></i>
+            <p>Upload Files</p>
+          </li>
+        </a>
+      </div>
+    </div>
+    <div class="contents">
+      <div class="headName">
+        <div class="searchbar">
+          <input 
+            class="searchData"
+            type="text"
+            placeholder="Search..."
+          />
+          <button>
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+      </div>
+      <div class="documents">
+        <h3>Recently added</h3>
+        <div class="docs">
+          <div class="norecords">
+            <p>No records found.</p>
+          </div>
+          <p class="loading">Loading...</p>
+<!-- 
+<a href="/files/sample1">
+  <div class="resPaper">
+    <div class="resImage"></div>
+    <p class="resTitle">Assisting library users through VLib - Virtual Library</p>
+  </div>
+</a>
+ -->
+         
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="/script/index.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.5/axios.min.js"></script>
+  <script>
+    const searchData = document.querySelector('.searchData');
+    const norecords = document.querySelector('.norecords');
+    
+    window.onload = async () => {
+      fetchFiles();
+    }
+    
+    searchData.onchange = () => {
+      searchFunction();
+    }
+    
+    // Search Feature
+    function searchFunction() {
+      norecords.style.display = "none";
+      
+      const resTitles = document.querySelectorAll('.resTitle');
+    
+      let titleArray = [];
+      
+      for(let i = 0; i < resTitles.length; i++){
+        titleArray.push(resTitles[i].textContent);
+      }
+      
+      const searchValue = searchData.value.toLowerCase();
+      let searchResponse = [];
+      
+      for(let i = 0; i < titleArray.length; i++){
+        if(titleArray[i].toLowerCase().includes(searchValue)){
+          resTitles[i].parentElement.parentElement.style.display = "block";
+          searchResponse.push(true);
+        }else{
+          resTitles[i].parentElement.parentElement.style.display = "none";
+        }
+      }
+      
+      if(!searchResponse.includes(true)){
+        norecords.style.display = "block";
+      }else{
+        norecords.style.display = "none";
+      }      
+    }
+    
+    async function fetchFiles() {
+      const response = await axios.get('/files/');
+      const files = response.data;
+      document.querySelector('.loading').style.display = 'none';
+      for (file of files) {
+        document.querySelector('.docs').innerHTML += `
+          <a href="/files/file?id=${file._id}">
+            <div class="resPaper">
+<<<<<<< HEAD
+              <div class="resImage" style="background-image: url('${file.thumbnail}')">
+                ${file.thumbnail ? '' : '<span>PDF</span>'}
+              </div>
+=======
+              <div class="resImage"></div>
+>>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
+              <p class="resTitle">${file.name}</p>
+            </div>
+          </a>`;
+      }
+    }
+</script>
+</body>
+</html>

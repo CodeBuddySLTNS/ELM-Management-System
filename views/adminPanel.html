@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.dataTables.css">
+  <link rel="stylesheet" href="/css/index.css">
+
+  <!-- FontAwesome icons -->
+  <script src="https://kit.fontawesome.com/17d86c0acc.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@accusoft/pdf-viewer@3/bundle.js"></script>
+  <title>E-Book System</title>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="schoolHeader">
+        <img src="/images/paclogo.png" alt="logo">
+        <div class="lgTitle">
+          <h2>Philippine Advent College, Inc. - Salug Campus</h2>
+          <p>E-Learning Materials</p>
+        </div>
+        <div class="smTitle">
+          <h2>PAC, Inc. - Salug Campus</h2>
+          <p>E-Learning Materials</p>
+        </div>
+      </div>
+      <div class="user menuBtn">
+        <i class="fa-solid fa-burger"></i>
+      </div>
+      <div class="lgUser userImg">
+        <div class="lgUserInfo">
+          <div class="infos">
+            <div class="profile">
+              <div class="userImg"></div>
+              <div class="info">
+                <p class="userName"></p>
+                <span class="studentCourse"></span>
+              </div>
+            </div>
+            <button class="">
+              <i class="fa-brands fa-xing lgCloseMenu"></i>
+            </button>
+          </div>
+          <div class="logoutBox">
+            <div class="logout">
+              <button class="logoutBtn">Logout</button>
+            </div>
+            <div class="credits">
+              <p>Developed by: Renz (⁠ ⁠ꈍ⁠ᴗ⁠ꈍ⁠)⁠◜⁠✧</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="navigation">
+      <div class="navbar">
+        <div class="userInfo">
+          <div class="profile">
+            <div class="userImg"></div>
+            <div class="info">
+              <p class="userName"></p>
+              <span class="studentCourse"></span>
+            </div>
+          </div>
+          <button class="closeMenu">
+            <i class="fa-brands fa-xing"></i>
+          </button>
+        </div>
+        <a href="/">
+          <li>
+            <i class="fa-solid fa-home"></i>
+            <p>Home</p>
+          </li>
+        </a>
+        <a href="/files/upload">
+          <li>
+            <i class="fa-solid fa-upload"></i>
+            <p>Upload Files</p>
+          </li>
+        </a>
+        <div class="navbarFooter">
+          <div class="logout">
+            <button class="logoutBtn">Logout</button>
+          </div>
+          <div class="credits">
+            <p>Developed by: Renz (⁠ ⁠ꈍ⁠ᴗ⁠ꈍ⁠)⁠◜⁠✧</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contents adminPanel">
+      <div class="dataContainer">
+        <table id="datatable" class="datatable">
+          <thead>
+              <tr>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Office</th>
+                  <th>Age</th>
+                  <th>Start date</th>
+                  <th>Salary</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>Tiger Nixon</td>
+                  <td>System Architect</td>
+                  <td>Edinburgh</td>
+                  <td>61</td>
+                  <td>2011-04-25</td>
+                  <td>$320,800</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.5/axios.min.js"></script>
+  <script src="/script/index.js"></script>
+  <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+    new DataTable('#datatable');
+  </script>
+</body>
+</html>

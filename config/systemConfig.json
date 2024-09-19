@@ -1,0 +1,8 @@
+{
+  "DevMode": false,
+  "useReactFrontend": false,
+  "onlyVerifiedUsers": true,
+  "imgurUrl": "https://api.imgur.com/3/upload",
+  "gdriveScope": ["https://www.googleapis.com/auth/drive"],
+  "gdriveFolder": ["1bDtwZEr2kFZ9REfcqplbP2NacRhDujzs"]
+}

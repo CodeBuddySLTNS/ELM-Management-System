@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <link rel="stylesheet" href="/css/index.css">
+
+  <!-- FontAwesome icons -->
+  <script src="https://kit.fontawesome.com/17d86c0acc.js" crossorigin="anonymous"></script>
+  <title>E-Book System</title>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="schoolHeader">
+        <img src="/images/paclogo.png" alt="logo">
+        <div class="lgTitle">
+          <h2>Philippine Advent College, Inc. - Salug Campus</h2>
+          <p>E-Learning Materials</p>
+        </div>
+        <div class="smTitle">
+          <h2>PAC, Inc. - Salug Campus</h2>
+          <p>E-Learning Materials</p>
+        </div>
+      </div>
+      <div class="user menuBtn">
+        <i class="fa-solid fa-burger"></i>
+      </div>
+<<<<<<< HEAD
+      <div class="lgUser userImg">
+        <div class="lgUserInfo">
+          <div class="infos">
+            <div class="profile">
+              <div class="userImg"></div>
+              <div class="info">
+                <p class="userName"></p>
+                <span class="studentCourse"></span>
+              </div>
+            </div>
+            <button class="">
+              <i class="fa-brands fa-xing lgCloseMenu"></i>
+            </button>
+          </div>
+          <div class="logoutBox">
+            <div class="logout">
+              <button class="logoutBtn">Logout</button>
+            </div>
+            <div class="credits">
+              <p>Developed by: Renz (⁠ ⁠ꈍ⁠ᴗ⁠ꈍ⁠)⁠◜⁠✧</p>
+            </div>
+          </div>
+        </div>
+      </div>
+=======
+>>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
+    </div>
+    <div class="navigation">
+      <div class="navbar">
+        <div class="toggleMenuBtn">
+          <i class="fa-solid fa-arrow-right toggleIcon"></i>
+        </div>
+        <a href="/">
+          <li>
+            <i class="fa-solid fa-home"></i>
+            <p>Home</p>
+          </li>
+        </a>
+      </div>
+    </div>
+    <div class="contents">
+      <div class="centerViewResPaper">
+        <div class="viewResPaper">
+          <div class="paperHeader">
+            <div class="image_descriptions">
+              <div class="paperImage"></div>
+              <div class="descriptions">
+                <div class="fileInfo">Filename</div>
+                <div class="downloadRead">
+                  <a class="readOnlineLink" href="#">
+                    <button class="readOnline">
+                      Read Online
+                    </button>
+                  </a>
+                  <a class="downloadLink" href="#">
+                    <button class="download">
+                      Download PDF
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="loading">Loading...</p>
+      </div>
+  </div>
+  
+  <script src="/script/index.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.5/axios.min.js"></script>
+  <script>
+    const urlPath = window.location.href;
+    const fileId = urlPath.slice(urlPath.indexOf('id=') + 3);
+    window.onload = async () => {
+      fetchFileData();
+    }
+    
+    // fetch file data
+    async function fetchFileData(){
+      try {
+        const response = await axios.get(`/files/file?id=${fileId}&info=true`);
+        const file = response.data;
+        
+        document.querySelector('.centerViewResPaper').style.display = 'flex';
+        document.querySelector('.loading').style.display = 'none';
+        document.querySelector(".fileInfo").innerHTML = `
+          <p>${file.name}</p>
+          <p class="infos">Department: ${file.department}</p>
+          <p class="infos">Uploader: ${file.uploader}</p>
+          <p class="infos">Category: ${file.category}</p>
+          `;
+        document.querySelector(".paperImage").style.backgroundImage = `url("${file.imageUrl}")`;
+        document.querySelector(".readOnlineLink").href = `/files/readonline?id=${fileId}`;
+        const downloadBtn = document.querySelector('.download');
+        downloadBtn.onclick = (event) => {
+          alert('download')
+          downloadBtn.textContent = 'Downloading...';
+          downloadBtn.setAttribute('disabled', 'true');
+          setDownloadPdfFile(file.name);
+        }
+      } catch (e) {console.log(e)}
+    }
+
+    // download pdf file
+    async function setDownloadPdfFile(fileName) {
+      const response = await axios.get(`/files/download?id=${fileId}`, { responseType: 'blob' });
+      const fileBlob = response.data;
+      const link = await window.URL.createObjectURL(new Blob([fileBlob]));
+      const a = document.querySelector('.downloadLink');
+      a.href = link;
+      a.download = fileName + '.pdf';
+      a.click();
+    }
+    
+    // Auto Scroll
+    function scrollBottom(){
+      comments.scrollTop = 0;
+    }
+  </script>
+</body>
+</html>
