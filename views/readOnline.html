@@ -29,8 +29,7 @@
       <div class="user menuBtn">
         <i class="fa-solid fa-burger"></i>
       </div>
-<<<<<<< HEAD
-      <div class="lgUser userImg">
+      <div class="lgUser">
         <div class="lgUserInfo">
           <div class="infos">
             <div class="profile">
@@ -54,14 +53,21 @@
           </div>
         </div>
       </div>
-=======
->>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
     </div>
     <div class="navigation">
       <div class="navbar">
-        <button class="closeMenu">
-          <i class="fa-brands fa-xing"></i>
-        </button>
+        <div class="userInfo">
+          <div class="profile">
+            <div class="userImg"></div>
+            <div class="info">
+              <p class="userName"></p>
+              <span class="studentCourse"></span>
+            </div>
+          </div>
+          <button class="closeMenu">
+            <i class="fa-brands fa-xing"></i>
+          </button>
+        </div>
         <a href="/">
           <li>
             <i class="fa-solid fa-home"></i>
@@ -74,10 +80,18 @@
             <p>Upload Files</p>
           </li>
         </a>
+        <div class="navbarFooter">
+          <div class="logout">
+            <button class="logoutBtn">Logout</button>
+          </div>
+          <div class="credits">
+            <p>Developed by: Renz (⁠ ⁠ꈍ⁠ᴗ⁠ꈍ⁠)⁠◜⁠✧</p>
+          </div>
+        </div>
       </div>
     </div>
     <div class="contents readOnlineContainer">
-      <p class="loading">Loading...</p>
+      <div class="loader"></div>
       <div class="viewerContainer"></div>
       </div>
   </div>
@@ -94,7 +108,7 @@
     
     async function viewPdfFile() {
       const { data } = await axios.get(`/files/readonline?id=${fileId}&read=true`, { responseType: 'arraybuffer' });
-      document.querySelector('.loading').style.display = 'none';
+      document.querySelector('.loader').style.display = 'none';
       const file = new Uint8Array(data)
       await window.Accusoft.PdfViewerControl.create({
         sourceDocument: file,

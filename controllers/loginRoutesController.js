@@ -1,14 +1,23 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const fileModel = require('../models/fileModel');
+const userModel = require('../models/userModel');
+
+const secret = process.env.SYSTEM_SECRET_KEY;
+const expiration = 12 * 60 * 60;
+
+const createToken = (id) => {
+  return jwt.sign({id}, secret, {expiresIn: expiration});
+}
 
 const signupPage = async (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));
+  res.sendFile(path.join(__dirname, '..', 'views', 'signup.html'));
 }
 const signup = async (req, res) => {
   const userData = req.body;
-<<<<<<< HEAD
   const profileImg = req.files.profileImg && req.files.profileImg.length > 0 ? req.files.profileImg[0] : null;
   
   if (profileImg) {
@@ -57,10 +66,8 @@ const signup = async (req, res) => {
           try {
             const newAccount = await userModel.create(userData);
           
-            console.log('Account created')
-            
             const token = await createToken(newAccount._id);
-            res.cookie('jwt', token);
+            res.cookie('jwt', token, {httpOnly: true, maxAge: expiration * 1000});
             res.status(201).json({ id: newAccount._id, loggedIn: true })
           } catch (e) {
             res.status(500).json({ error: e.message })
@@ -71,17 +78,38 @@ const signup = async (req, res) => {
       res.status(500).json({ error: e.message })
     }
   }
-=======
   console.log(userData);
->>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
 }
 
 const loginPage = async (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));
 }
+
 const login = async (req, res) => {
-  const { user, password } = req.body;
-  console.log(user, password);
+  const { username, password } = req.body;
+  try {
+    const user = await userModel.findOne({username});
+    
+    if (!user) return res.status(400).json({usernameError:true})
+    
+    bcrypt.compare(password, user._doc.password, async (err, match) => {
+      if (err) return console.log('wrong', err)
+      if (match) {
+        const token = await createToken(user._doc._id);
+        res.cookie('jwt', token, {httpOnly: true, maxAge: expiration * 1000});
+        return res.status(201).json({ id: user._doc._id, loggedIn: true })
+      }
+      res.status(400).json({passwordError:true});
+    })
+  } catch (e) {
+    console.log(e);
+    res.status(500);
+  }
+}
+
+const logout = async (req, res) => {
+  res.cookie('jwt', '', {maxAge: 1});
+  res.json({ loggedOut: true });
 }
 
 module.exports = {
@@ -89,4 +117,5 @@ module.exports = {
   login,
   signupPage,
   loginPage,
+  logout,
 }

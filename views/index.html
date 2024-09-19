@@ -28,8 +28,7 @@
       <div class="user menuBtn">
         <i class="fa-solid fa-burger"></i>
       </div>
-<<<<<<< HEAD
-      <div class="lgUser userImg">
+      <div class="lgUser">
         <div class="lgUserInfo">
           <div class="infos">
             <div class="profile">
@@ -53,14 +52,21 @@
           </div>
         </div>
       </div>
-=======
->>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
     </div>
     <div class="navigation">
       <div class="navbar">
-        <button class="closeMenu">
-          <i class="fa-brands fa-xing"></i>
-        </button>
+        <div class="userInfo">
+          <div class="profile">
+            <div class="userImg"></div>
+            <div class="info">
+              <p class="userName"></p>
+              <span class="studentCourse"></span>
+            </div>
+          </div>
+          <button class="closeMenu">
+            <i class="fa-brands fa-xing"></i>
+          </button>
+        </div>
         <a href="/">
           <li>
             <i class="fa-solid fa-home"></i>
@@ -73,6 +79,14 @@
             <p>Upload Files</p>
           </li>
         </a>
+        <div class="navbarFooter">
+          <div class="logout">
+            <button class="logoutBtn">Logout</button>
+          </div>
+          <div class="credits">
+            <p>Developed by: Renz (⁠ ⁠ꈍ⁠ᴗ⁠ꈍ⁠)⁠◜⁠✧</p>
+          </div>
+        </div>
       </div>
     </div>
     <div class="contents">
@@ -94,16 +108,32 @@
           <div class="norecords">
             <p>No records found.</p>
           </div>
-          <p class="loading">Loading...</p>
-<!-- 
-<a href="/files/sample1">
+          <p class="loader"></p>
+
+<!--
+<a href="/files/file?id=${file._id}">
   <div class="resPaper">
+    <div class="resImage">
+      <span>PDF</span>
+    </div>
     <div class="resImage"></div>
-    <p class="resTitle">Assisting library users through VLib - Virtual Library</p>
+    <p class="resTitle">${file.name} jssj sjsi is uwuw kdkd sjsk iudjdkskskskdkddkdkdkkdkd
+    sjdjjdjdjdjdjeskjd
+    iejsjsksjsks
+    eie</p>
   </div>
 </a>
- -->
-         
+<a href="/files/file?id=${file._id}">
+  <div class="resPaper">
+    <div class="resImage">
+      <span>PDF</span>
+    </div>
+    <div class="resImage"></div>
+    <p class="resTitle">${file.name} jssj sjsi is uwuw kdkd sjsk ieie</p>
+  </div>
+</a>
+-->
+
         </div>
       </div>
     </div>
@@ -157,18 +187,15 @@
     async function fetchFiles() {
       const response = await axios.get('/files/');
       const files = response.data;
-      document.querySelector('.loading').style.display = 'none';
+      document.querySelector('.loader').style.display = 'none';
       for (file of files) {
         document.querySelector('.docs').innerHTML += `
           <a href="/files/file?id=${file._id}">
             <div class="resPaper">
-<<<<<<< HEAD
               <div class="resImage" style="background-image: url('${file.thumbnail}')">
                 ${file.thumbnail ? '' : '<span>PDF</span>'}
               </div>
-=======
               <div class="resImage"></div>
->>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
               <p class="resTitle">${file.name}</p>
             </div>
           </a>`;

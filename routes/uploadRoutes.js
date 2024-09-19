@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const uploadRoutes = express.Router();
+const verifyAuth = require('../middlewares/verifyAuth');
 const {
   upload,
   uploadPage,
@@ -28,6 +29,8 @@ uploadRoutes.use(multerUpload.fields([
     { name: 'pdfFiles', maxCount: 10 }
   ]));
 
-uploadRoutes.route('/upload').get(uploadPage).post(upload);
+uploadRoutes.get('/upload', verifyAuth, uploadPage);
+
+uploadRoutes.post('/upload', verifyAuth, upload);
 
 module.exports = uploadRoutes;

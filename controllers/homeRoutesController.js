@@ -10,7 +10,6 @@ const getFiles = async (req, res) => {
   try {
     const files = await file.find({});
     res.json(files);
-    console.log(files)
   } catch (e) {
     res.status(500);
     console.log('Error getting files:', e.message)

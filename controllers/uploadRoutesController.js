@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { google }= require('googleapis');
 const fileModel = require('../models/fileModel');
-const apikeys = require('../config/gdrivekey.json');
+const apikeys = JSON.parse(process.env.GDRIVE_KEY);
 const scope = ['https://www.googleapis.com/auth/drive'];
 
 const uploadPage = async (req, res) => {
@@ -10,7 +10,6 @@ const uploadPage = async (req, res) => {
 }
 
 const upload = async (req, res) => {
-<<<<<<< HEAD
   try {
     const pdfFiles = req.files.pdfFiles;
     console.log(req.files.thumbnail)
@@ -78,17 +77,13 @@ const upload = async (req, res) => {
   } catch (e) {
     res.status(500);
     console.log('Error at Upload Route:', e);
-=======
-  const dataFiles = req.files;
-  if (!dataFiles) return;
-  const { originalname, filename, mimetype } = dataFiles?.pdfFiles[0];
-  const fileName = originalname.slice(0, originalname.lastIndexOf('.'));
-  const filePath = path.join(__dirname, `../cache/uploads/${filename}`);
+  }
+}
   
+
+ 
+ async function uploadFileData(file, newFileData, thumbnailLink, acc){
   const { id, name, webContentLink } = await uploadFile(originalname, filePath);
-  //const alreadyExist = await fileModel.findOne({});
-  
-  console.log(name)
   
   const pdfData = {
     fileName: name,
@@ -96,16 +91,11 @@ const upload = async (req, res) => {
     name: name.slice(0, name.lastIndexOf('.')),
     url: webContentLink,
     mimeType: mimetype,
-    category: 'Computer and Technologies',
-    department: 'BSIT',
-    uploader: 'BSIT Student',
->>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
+    category: newFileData.category,
+    department: newFileData.department,
+    uploader: acc.firstName + ' ' + acc.lastName,
   }
-  // await fileModel.deleteMany({})
   await fileModel.create(pdfData);
-  console.log(await fileModel.find({}))
-  
-  res.json({response: 'File uploaded successfully!'});
 }
 
 
@@ -192,5 +182,5 @@ async function generatePublicUrl(fileId, drive){
 
 module.exports = {
   upload,
-  uploadPage,
+  uploadPage
 }

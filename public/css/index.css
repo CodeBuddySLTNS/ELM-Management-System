@@ -65,8 +65,6 @@ body{
 .loginForm h1{
   display: inline-block;
   font-size: 2.5em;
-}
-.loginTitle{
   width: 100%;
   padding-bottom: 25px;
   display: flex;
@@ -107,9 +105,12 @@ body{
   font-size: 20px;
   color: rgba(0,0,0,0.7);
   position: absolute;
-  top: 50%;
+  top: 35px;
   right: 20px;
-  transform: translateY(-25%);
+}
+.inputField p{
+  text-align: left;
+  color: red;
 }
 .loginForm button{
   width: 100%;
@@ -132,6 +133,9 @@ body{
 }
 .newAccount a{
   text-decoration: underline;
+}
+.formLogo{
+  display: none;
 }
 
 
@@ -183,12 +187,19 @@ body{
 .header .user{
   width: 35px;
   aspect-ratio: 1/1;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-<<<<<<< HEAD
+  box-shadow: 0 0 2px rgba(0,0,0,0.6);
   position: relative;
+}
+.header .lgUser{
+  position: relative;
+  width: 35px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  border: 1.5px solid #00706097;
   background-image: url('/images/defaultProfile.png');
   background-position: center;
   background-size: cover;
@@ -261,6 +272,7 @@ body{
   font-size: 1.1rem;
   white-space: nowrap;
   text-overflow: ellipsis;
+  text-align: left;
   overflow: hidden;
   position: absolute;
   top: -2px;
@@ -294,9 +306,7 @@ body{
 }
 .header .lgUser .toggleUserInfo {
   height: 147px;
-=======
   box-shadow: 0 0 2px 0.1px rgba(0, 0, 0, 0.5);
->>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
 }
 
 .navigation{
@@ -323,6 +333,12 @@ body{
   align-items: center;
 }
 .navbar .closeMenu{
+  display: none;
+}
+.navbar .userInfo{
+  display: none;
+}
+.navbarFooter{
   display: none;
 }
 
@@ -374,8 +390,8 @@ body{
 .docs{
   padding: 10px 0px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 100px));
-  grid-auto-rows: 300px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 180px));
+  grid-auto-rows: 250px;
   gap: 30px;
 }
 .docs .resPaper{
@@ -393,25 +409,40 @@ body{
   width: 100%;
   min-height: 1/1;
   max-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: var(--c2);
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
+.docs .resImage span{
+  font-weight: bold;
+  font-size: 1rem;
+  color: gray;
+  text-shadow: 0 0 2px rgba(250,250,250,0.4);
+}
 .resPaper p{
+  height: 49px;
   color: #000;
   padding: 10px 0px 8px;
   font-size: 18.5px;
   font-weight: 600;
   font-family: 'Questrial';
   text-align: center;
-  place-self: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
+
 .norecords{
   display: none;
 }
 
-/* View research papers design*/
+/* View esearch papers design*/
 .centerViewResPaper{
   width: 100%;
   display: none;
@@ -439,7 +470,7 @@ body{
   height: 225px;
   border-radius: 10px;
   background: var(--c2);
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -523,7 +554,6 @@ body{
 }
 .uploadForm button[type="submit"]{
   margin-top: 1rem;
-<<<<<<< HEAD
   padding: 0.6rem 1.5rem;
   border: 0;
   border-radius: 5px;
@@ -555,7 +585,6 @@ body{
           background-clip:text;
 }
 
-
 /* Admin panel */
 .adminPanelContainer{
   padding: 40px 60px;
@@ -580,12 +609,7 @@ body{
 }
 .manageUsers .datatable {
   display: none;
-  width: 100%;
-  overflow: auto;
   box-shadow: 0 0 2px rgba(0,0,0,0.6);
-}
-.manageUsers .datatable thead{
-  width: 100%;
 }
 
 
@@ -629,9 +653,7 @@ body{
 
 @keyframes l22{
   100%{background-position: left}
-=======
   padding: 0.25rem 1rem;
->>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
 }
 
 
@@ -673,15 +695,6 @@ body{
   .navbar a li i{
     display: none;
   }
-  .navbar .closeMenu{
-    display: inline-block;
-    font-size: 1.1rem;
-    padding: 0.1rem 0.5rem;
-    border: 0;
-    border-radius: 5px;
-    margin: 0 0.5rem 0 0;
-    box-shadow: 0 0 1.5px rgba(0,0,0,0.8);
-  }
   .toggleMenu{
     width: 100vw;
     right: 0;
@@ -691,13 +704,119 @@ body{
     text-decoration-color: #2e2e2e;
     background: var(--c1);
   }
-  
+  .navbar .userInfo{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    padding: 0 0.5rem;
+    margin: 0 0 1rem;
+    border: 0;
+    border-radius: 10px;
+    background: var(--c2);
+    overflow: hidden;
+    transition: 0.6s;
+  }
+  .navbar .profile{
+    width: 100%;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 5px;
+    overflow: hidden;
+  }
+  .navbar .profile .userImg{
+    width: 35px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    border: 1.5px solid #00706097;
+    background-image: url('/images/defaultProfile.png');
+    background-position: center;
+    background-size: cover;
+  }
+  .navbar .profile .info{
+    width: 100%;
+    font-family: 'Questrial', 'Poppins';
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .navbar .profile p{
+    width: 100%;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+    overflow: hidden;
+    position: absolute;
+    top: -2px;
+  }
+  .navbar .closeMenu{
+    width: 35px;
+    aspect-ratio: 1/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+    background: transparent;
+  }
+  .navbar .closeMenu i{
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 0.35rem 0.6rem;
+    border: 0;
+    border-radius: 5px;
+    margin: 0;
+    background: var(--c4);
+    box-shadow: 0 0 1.5px rgba(0,0,0,0.8);
+  }
+  .navigation .profile span{
+    font-size: 0.8rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: absolute;
+    top: 18px;
+  }
+  .navbarFooter{
+    display: block;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.1);
+  }
+  .navbarFooter .logout{
+    width: 100%;
+    padding: 1rem 1rem 0;
+  }
+  .navbarFooter .logout button{
+    width: 100%;
+    padding: 0.4rem;
+    font-size: 1rem;
+    font-family: 'Questrial', 'Poppins';
+    border: 0;
+    border-radius: 5px;
+    background: #ff3f3f94;
+    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+  }
+  .navbarFooter .credits p{
+    padding: 5px 0 1rem;
+    text-align: center;
+    font-family: 'Questrial';
+  }
   
   .header{
     padding: 0.35rem 0.65rem 0.35rem 0.5rem;
   }
   .header img{
     width: 35px;
+  }
+  .header .user{
+    display: flex;
+    
+  }
+  .header .lgUser{
+    display: none;
   }
   .header .user i{
     padding: 0.5rem 0.6rem;
@@ -746,6 +865,7 @@ body{
     padding: 15px;
   }
   .resPaper p{
+    height: 40px;
     padding: 10px 0 0;
     font-size: 0.9rem;
   }
@@ -759,6 +879,63 @@ body{
   .readOnlineContainer{
     padding: 5px 0 0;
   }
-
-
+  
+  
+  .login{
+    display: 100%;
+    grid-template-columns: 1fr;
+  }
+  .loginLogo{
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+  .formLogo{
+    display: block;
+  }
+  .formLogo img{
+    width: 60px;
+    aspect-ratio: 1/1;
+  }
+  .loginForm {
+    width: 100%;
+    padding: 2rem 0;
+  }
+  .loginForm form{
+    width: 80%;
+    padding: 1.8rem;
+  }
+  .loginForm h1{
+    font-size: 1.15rem;
+    padding: 0 0 10px;
+  }
+  .remember{
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+  .remember p{
+    padding: 5px;
+  }
+  .remember input{
+    width: 18px;
+    height: 18px;
+  }
+  .loginForm .inputs input{
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+  .loginForm .inputField i{
+    font-size: 0.95rem;
+    top: 23px;
+    right: 15px;
+  }
+  .loginForm button{
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.35rem 0.5rem;
+  }
+  .newAccount{
+    margin-top: 20px;
+    font-size: 1rem;
+  }
 }

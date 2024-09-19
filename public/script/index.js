@@ -7,7 +7,6 @@ menuBtn.onclick = () => {
 }
 document.querySelector('.closeMenu').onclick = () => {
   navigation.classList.remove('toggleMenu');
-<<<<<<< HEAD
 }
 
 // add event listener to logoutBtn
@@ -39,6 +38,3 @@ window.addEventListener("load", async () => {
     console.log(e)
   }
 })
-=======
-}
->>>>>>> e620d148568f9121006b80425f48f26409fdf2d7

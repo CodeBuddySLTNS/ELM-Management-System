@@ -3,19 +3,18 @@ const userSchema = new mongoose.Schema({
   fullName: {
     type: String,
     required: true
-  }
+  },
   firstName: {
     type: String,
     required: true
-  }
+  },
   middleName: {
     type: String,
     required: true
-  }
+  },
   lastName: {
     type: String,
     required: true
-<<<<<<< HEAD
   },
   yearLevel: {
     type: Number,
@@ -46,12 +45,6 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-=======
-  }
-  department: {
-    type: String,
-    required: true
->>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
   }
 }, {timestamps: true})
 

@@ -13,48 +13,82 @@
 <body>
   <div class="login">
     <div class="loginLogo">
-<<<<<<< HEAD
       <img src="/images/paclogo.png" alt="logo">
-=======
-      <img src="images/logo.png" alt="">
->>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
     </div>
     <div class="loginForm">
       <form>
-<<<<<<< HEAD
         <div class="formLogo">
           <img src="/images/paclogo.png" alt="logo">
         </div>
-=======
->>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
         <div class="loginTitle">
-          <h1><i class="fa-solid fa-user-tie"></i> Login Account</h1>
+          <h1>Login Account</h1>
         </div>
         <div class="inputs">
           <div class="inputField">
-            <input type="text" placeholder="username">
+            <input class="username" type="text" placeholder="username">
             <i class="fa-solid fa-user"></i>
+            <p class="usernameError"></p>
           </div>
           <div class="inputField">
-            <input type="password" placeholder="password">
+            <input class="password" type="password" placeholder="password">
             <i class="fa-solid fa-lock"></i>
+            <p class="passwordError"></p>
           </div>
         </div>
         <div class="remember">
           <input type="checkbox">
           <p>Remember me</p>
         </div>
-        <button>Login <i class="fa-solid fa-right-to-bracket"></i></button>
+        <button class="loginBtn">Login <i class="fa-solid fa-right-to-bracket"></i></button>
         <div class="newAccount">
-<<<<<<< HEAD
-          <p>Don't have an account? <a href="/auth/signup">Sign up</a></p>
-=======
-          <p>Don't have an account? <a href="#">Sign up</a>.</p>
->>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
+          <p>Don't have an account? <a href="#">Signup</a></p>
         </div>
       </form>
-      
     </div>
   </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.5/axios.min.js"></script>
+  <script>
+    const username = document.querySelector('.username');
+    const password = document.querySelector('.password');
+    
+    const validateInputs = () => {
+      let status = false;
+      username.value.trim() === '' ?
+        (status = true, document.querySelector('.usernameError').textContent = 'Username is required.') :
+        document.querySelector('.usernameError').textContent = '';
+      password.value.trim() === '' ?
+        (status = true, document.querySelector('.passwordError').textContent = 'Password is required.') :
+        document.querySelector('.passwordError').textContent = '';
+      return status;
+    }
+    
+    document.querySelector('form').onsubmit = async (e) => {
+      e.preventDefault();
+      document.querySelector('form').onchange = () => validateInputs();
+      
+      if (validateInputs()) return;
+      
+      document.querySelector('.loginBtn').disabled = 'true';
+      document.querySelector('.loginBtn').textContent = 'Logging in...';
+      
+      const loginData = {
+        username: username.value.trim(),
+        password: password.value.trim(),
+      }
+      try {
+        const {data} = await axios.post('/auth/login', loginData);
+        if (data.loggedIn) window.location.href = '/';
+      } catch (e) {
+        document.querySelector('.loginBtn').disabled = '';
+        document.querySelector('.loginBtn').innerHTML = 'Login <i class="fa-solid fa-right-to-bracket"></i>';
+        e.response.data.usernameError ?
+          document.querySelector('.usernameError').textContent = 'User account not found.' : '';
+        e.response.data.passwordError ?
+          document.querySelector('.passwordError').textContent = 'Wrong password.' : '';
+        
+      }
+    }
+  </script>
 </body>
 </html>

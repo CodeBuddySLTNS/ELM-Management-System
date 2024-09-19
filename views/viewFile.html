@@ -28,8 +28,7 @@
       <div class="user menuBtn">
         <i class="fa-solid fa-burger"></i>
       </div>
-<<<<<<< HEAD
-      <div class="lgUser userImg">
+      <div class="lgUser">
         <div class="lgUserInfo">
           <div class="infos">
             <div class="profile">
@@ -53,13 +52,20 @@
           </div>
         </div>
       </div>
-=======
->>>>>>> e620d148568f9121006b80425f48f26409fdf2d7
     </div>
     <div class="navigation">
       <div class="navbar">
-        <div class="toggleMenuBtn">
-          <i class="fa-solid fa-arrow-right toggleIcon"></i>
+        <div class="userInfo">
+          <div class="profile">
+            <div class="userImg"></div>
+            <div class="info">
+              <p class="userName"></p>
+              <span class="studentCourse"></span>
+            </div>
+          </div>
+          <button class="closeMenu">
+            <i class="fa-brands fa-xing"></i>
+          </button>
         </div>
         <a href="/">
           <li>
@@ -67,6 +73,20 @@
             <p>Home</p>
           </li>
         </a>
+        <a href="/files/upload">
+          <li>
+            <i class="fa-solid fa-upload"></i>
+            <p>Upload Files</p>
+          </li>
+        </a>
+        <div class="navbarFooter">
+          <div class="logout">
+            <button class="logoutBtn">Logout</button>
+          </div>
+          <div class="credits">
+            <p>Developed by: Renz (⁠ ⁠ꈍ⁠ᴗ⁠ꈍ⁠)⁠◜⁠✧</p>
+          </div>
+        </div>
       </div>
     </div>
     <div class="contents">
@@ -94,7 +114,7 @@
           </div>
         </div>
       </div>
-      <p class="loading">Loading...</p>
+      <div class="loader"></div>
       </div>
   </div>
   
@@ -114,7 +134,7 @@
         const file = response.data;
         
         document.querySelector('.centerViewResPaper').style.display = 'flex';
-        document.querySelector('.loading').style.display = 'none';
+        document.querySelector('.loader').style.display = 'none';
         document.querySelector(".fileInfo").innerHTML = `
           <p>${file.name}</p>
           <p class="infos">Department: ${file.department}</p>
