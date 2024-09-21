@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+const axios = require('axios');
 const { google }= require('googleapis');
 const fileModel = require('../models/fileModel');
+const userModel = require('../models/userModel');
 const apikeys = JSON.parse(process.env.GDRIVE_KEY);
-const scope = ['https://www.googleapis.com/auth/drive'];
+const systemConfig = require('../config/systemConfig');
 
 const uploadPage = async (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'upload.html'))
@@ -11,13 +13,12 @@ const uploadPage = async (req, res) => {
 
 const upload = async (req, res) => {
   try {
-    const pdfFiles = req.files.pdfFiles;
-    console.log(req.files.thumbnail)
+    const files = req.files.files;
     const thumbnail = req.files.thumbnail && req.files.thumbnail.length > 0 ? req.files.thumbnail[0] : null;
     const newFileData = req.body;
     const { _doc: acc } = await userModel.findOne({ _id: res.locals.userId });
     
-    if (!pdfFiles) return res.status(500);
+    if (!files) return res.status(500);
     
     if (thumbnail) {
       const thumbnailPath = path.join(__dirname, '..', 'cache', 'uploads', thumbnail.filename);
@@ -36,7 +37,6 @@ const upload = async (req, res) => {
             console.log(`${thumbnailPath} deleted.`));
           
           loopAndUpload(img.data.link);
-          
         } catch (e) {
           res.status(500);
           console.log('Error uploading files:', e);
@@ -48,26 +48,25 @@ const upload = async (req, res) => {
     
     async function loopAndUpload(thumbnailLink) {
       try {
-        if (pdfFiles.length > 0) {
+        if (files.length > 0) {
           const results = new Array();
-          for (file of pdfFiles) {
+          for (file of files) {
             try {
               await uploadFileData(file, newFileData, thumbnailLink, acc);
               results.push({
-                filename: file.originalname,
+                filename: newFileData.filename || file.originalname,
                 message: 'uploaded successfully.',
                 error: false
               });
             } catch (e) {
               results.push({
-                filename: file.originalname,
+                filename: newFileData.filename || file.originalname,
                 message: e.message,
                 error: true
               });
             }
           }
-          res.json({success: true, ...results});
-          console.log(results);
+          res.json(results);
         }
       } catch (e) {
         res.status(500);
@@ -83,21 +82,39 @@ const upload = async (req, res) => {
 
  
  async function uploadFileData(file, newFileData, thumbnailLink, acc){
-  const { id, name, webContentLink } = await uploadFile(originalname, filePath);
-  
-  const pdfData = {
-    fileName: name,
-    fileId: id,
-    name: name.slice(0, name.lastIndexOf('.')),
-    url: webContentLink,
-    mimeType: mimetype,
-    category: newFileData.category,
-    department: newFileData.department,
-    uploader: acc.firstName + ' ' + acc.lastName,
+  const filePath = path.join(__dirname, '..', 'cache', 'uploads', file.filename)
+  try {
+    const { id, name, webContentLink } = await uploadFile(newFileData.filename || file.originalname, filePath);
+    
+    const pdfData = {
+      fileName: name,
+      fileId: id,
+      name: newFileData.filename || name.slice(0,name.lastIndexOf('.')),
+      url: webContentLink,
+      mimeType: file.mimetype,
+      category: newFileData.category,
+      department: newFileData.department,
+      uploader: acc.firstName + ' ' + acc.lastName,
+    }
+    
+    if (thumbnailLink) pdfData.thumbnail = thumbnailLink;
+    
+    await fileModel.create(pdfData);
+    
+    // delete the file
+    fs.unlink(filePath, (err) => {
+      err ? console.log(`Error deleting the file ${file.filename}.`) :
+        console.log(`${file.filename} deleted.`);
+    });
+  } catch (e) {
+    // delete the file
+    fs.unlink(filePath, (err) => {
+      err ? console.log(`Error deleting the file ${file.filename}.`) :
+        console.log(`${file.filename} deleted.`);
+    });
+    throw new Error(e);
   }
-  await fileModel.create(pdfData);
 }
-
 
 
 // A Function that can provide access to google drive api
@@ -106,7 +123,7 @@ async function authorize(){
     apikeys.client_email,
     null,
     apikeys.private_key,
-    scope
+    systemConfig.gdriveScope,
   );
   await jwtClient.authorize();
   return jwtClient;
@@ -119,7 +136,7 @@ async function uploadFile(fileName, filePath){
     
     const fileMetaData = {
       name: fileName,
-      parents: ['1sqswJVZNhuvm8Gy34dKN1ZFR72iB-Xk3'] // A folder ID to which file will get uploaded
+      parents: systemConfig.gdriveFolder, // A folder ID to which file will be uploaded
     }
     
     const uploaded = await drive.files.create({
@@ -139,7 +156,8 @@ async function uploadFile(fileName, filePath){
     return fileData;
     
   } catch (e) {
-    console.log('Error uploading file:', e.message)
+    console.log(e);
+    return null;
   }
 }
 

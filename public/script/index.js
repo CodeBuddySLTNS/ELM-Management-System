@@ -33,6 +33,22 @@ window.addEventListener("load", async () => {
       if (data.profileImg) document.querySelectorAll('.userImg').forEach(element => element.style.backgroundImage = `url('${data.profileImg}')`);
       document.querySelectorAll('.userName').forEach(element => element.textContent = data.firstName + ' ' + data.lastName);
       document.querySelectorAll('.studentCourse').forEach(element => element.textContent = data.department.split('|')[0] + 'Student');
+      
+      const departmentInput = document.querySelector('.department');
+      const categoryInput = document.querySelector('.category');
+      const {data:configs} = await axios.get('/config/general');
+      if (configs) {
+        if (categoryInput) {
+          for (categ of configs.categories) {
+            categoryInput.innerHTML += `<option value="${categ}">${categ}</option>`
+          }
+        }
+        if (departmentInput) {
+          for (dep of configs.departments) {
+            departmentInput.innerHTML += `<option value="${dep}">${dep.split('|')[1].trim()}</option>`
+          }
+        }
+      }
     }
   } catch (e) {
     console.log(e)

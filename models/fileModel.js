@@ -35,6 +35,9 @@ const fileSchema = new mongoose.Schema({
   uploader: {
     type: String,
   },
+  thumbnail: {
+    type: String,
+  },
 }, { timestamps: true})
 
 module.exports = mongoose.model('file', fileSchema);

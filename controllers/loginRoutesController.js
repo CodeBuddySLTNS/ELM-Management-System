@@ -1,10 +1,12 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const axios = require('axios');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fileModel = require('../models/fileModel');
 const userModel = require('../models/userModel');
+const systemConfig = require('../config/systemConfig');
 
 const secret = process.env.SYSTEM_SECRET_KEY;
 const expiration = 12 * 60 * 60;
@@ -26,7 +28,7 @@ const signup = async (req, res) => {
       try {
         const {data:img} = await axios.post(systemConfig.imgurUrl, fileBuffer, {
           headers: {
-            "Authorization": "Client-Id 6bc5fd51c813512",
+            "Authorization": process.env.IMGUR_CLIENT_ID,
             "Content-Type": "application/octet-stream"
           }
         });
@@ -39,7 +41,7 @@ const signup = async (req, res) => {
         
       } catch (e) {
         res.status(500);
-        console.log(e.message);
+        console.log(e);
       }
     })
   } else {

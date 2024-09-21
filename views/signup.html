@@ -15,7 +15,7 @@
     <div class="loginLogo">
       <img src="/images/paclogo.png" alt="logo">
     </div>
-    <div class="loginFormContainer">
+    <div class="signupFormContainer">
       <form class="signupForm" name="signupForm">
         <div class="formLogo">
           <img src="/images/paclogo.png" alt="logo">
@@ -100,7 +100,7 @@
           </div>
           <div class="inputField">
             <label>
-              Profile Picture(optional):
+              Profile Picture (optional):
               <input class="profileImg" type="file">
             </label>
           </div>
@@ -143,6 +143,8 @@
         document.querySelector('.departmentError').textContent = "";
       yearLevel.value.trim() === "" ?
         ( isError = true, document.querySelector('.yearLevelError').textContent = "Year Level is required.") :
+        Number(yearLevel.value) < 1 || Number(yearLevel.value) > 4 ?
+        ( isError = true, document.querySelector('.yearLevelError').textContent = "Year Level must be from 1 to 4.") :
         document.querySelector('.yearLevelError').textContent = "";
       email.value.trim() === "" ?
         ( isError = true, document.querySelector('.emailError').textContent = "Email is required.") :
@@ -195,13 +197,37 @@
       try {
         const {data} = await axios.post('/auth/signup', formData);
         if (data.loggedIn) window.location.href = '/'; // redirect to homepage once logged in
+        if (data.usernameExist) {
+          alert('Username already taken.');
+          document.querySelector('.signupBtn').disabled = '';
+          document.querySelector('.signupBtn').innerText = 'Sign in';
+        }
+        if (data.accountExist) {
+          alert(`Account for ${userData.fullName} already exist.`);
+          document.querySelector('.signupBtn').disabled = '';
+          document.querySelector('.signupBtn').innerText = 'Sign in';
+        }
       } catch (e) {
-        alert('Error: Your account name or username already exist in our database. Please try to change it labyo.')
+        alert(e.message)
         console.log(e);
         document.querySelector('.signupBtn').disabled = '';
         document.querySelector('.signupBtn').innerText = 'Sign in';
       }
     }
+    
+    window.addEventListener("load", async () => {
+      try {
+        const {data:configs} = await axios.get('/config/signup');
+        if (configs) {
+          for (dep of configs.departments) {
+            department.innerHTML += `<option value="${dep}">${dep.split('|')[1].trim()}</option>`
+          }
+        }
+      } catch (e) {
+        alert(e.message);
+        console.log(e);
+      }
+    })
   </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 const express = require('express');
 const loginRoutes = express.Router();
+const multerUpload = require('../middlewares/multerUpload');
 const {
   login,
   loginPage,
@@ -10,7 +11,9 @@ const {
 
 loginRoutes.route('/login').get(loginPage).post(login);
 
-loginRoutes.route('/signup').get(signupPage).post(signup);
+loginRoutes.route('/signup').get(signupPage).post(multerUpload.fields([
+    { name: 'profileImg', maxCount: 1 }
+  ]), signup);
 
 loginRoutes.get('/logout', logout);
 

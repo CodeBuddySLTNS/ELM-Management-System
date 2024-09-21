@@ -1,5 +1,7 @@
 const path = require('path');
 const userModel = require('../models/userModel');
+const configModel = require('../models/configModel');
+const systemConfig = require('../config/systemConfig');
 
 const fetchUserData = async (req, res) => {
   const { userId } = res.locals;
@@ -19,6 +21,9 @@ const fetchUserData = async (req, res) => {
       isVerified: data._doc.isVerified,
       role: data._doc.role,
     }
+    
+    const configs = await configModel.findOne({_id: systemConfig.configId});
+    if (configs) userData.configs = {...configs._doc}
     res.json(userData);
   } catch (e) {
     res.status(500);

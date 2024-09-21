@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const dbConnect = require('./config/dbConnection');
 
 // require('./models/userModel').deleteMany({}).then(d => console.log(d))
+// require('./models/fileModel').deleteMany({}).then(d => console.log(d))
 
 const app = express();
 const port = 5000;
@@ -21,6 +22,7 @@ app.use('/files', require('./routes/uploadRoutes'));
 app.use('/auth', require('./routes/loginRoutes'));
 app.use('/user', require('./routes/userRoutes'));
 app.use('/admin', require('./routes/adminRoutes'));
+app.use('/config', require('./routes/configRoutes'));
 
 // only run the server when connected to database
 dbConnect().then((res) => {

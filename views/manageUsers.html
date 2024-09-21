@@ -164,7 +164,7 @@
         </tr>`
         }
         document.querySelector('.loader').style.display = 'none';
-        datatable.style.display = 'block';
+        datatable.style.visibility = 'visible';
         new DataTable('#datatable', {
           columnDefs: [
             {className: "dt-center", targets: "_all"}
@@ -173,7 +173,7 @@
       } catch (e) {
         alert(e)
         document.querySelector('.loader').style.display = 'none';
-        datatable.style.display = 'block';
+        datatable.style.visibility = 'visible';
         new DataTable('#datatable', {
           columnDefs: [
             {className: "dt-center", targets: "_all"}
@@ -186,8 +186,8 @@
       event.textContent = 'verifying...';
       try{
         const {data} = await axios.patch('/admin/manage/verify', {username});
-        alert(`${event.parentElement.parentElement.childNodes[1].textContent} verified successfully.`);
         event.textContent = 'verified';
+        event.disabled = true;
       } catch (e) {
         alert(`Unable to verify ${event.parentElement.parentElement.childNodes[1].textContent}`);
         event.textContent = 'verify';

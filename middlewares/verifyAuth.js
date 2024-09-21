@@ -11,7 +11,6 @@ const verifyAuth = async (req, res, next) => {
         try {
           if (verifiedToken) {
             const user = await userModel.findOne({ _id: verifiedToken.id });
-            console.log(verifiedToken)
             if (!user) {
               console.log('user not found.');
               return res.redirect('/auth/login')

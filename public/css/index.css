@@ -31,18 +31,19 @@ body{
   width: 100%;
   height: 100vh;
   display: grid;
-  grid-template-columns: 0.8fr 1.8fr;
+  grid-template-columns: 1.1fr 2fr;
   grid-template-rows: 1fr;
 }
 .loginLogo{
   height: 100vh;
   display: flex;
+  justify-content: center;
   align-items: center;
   background: var(--c1);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 .loginLogo img{
-  width: 100%;
+  width: 75%;
   padding: 10%;
   border-radius: 50%;
 }
@@ -70,8 +71,6 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.loginTitle i{
   margin-right: 10px;
 }
 .remember{
@@ -112,6 +111,9 @@ body{
   text-align: left;
   color: red;
 }
+.inputField label{
+  font-family: 'Questrial', 'Poppins';
+}
 .loginForm button{
   width: 100%;
   border: 0;
@@ -119,7 +121,7 @@ body{
   justify-content: center;
   align-items: center;
   gap: 8px;
-  font-weight: bold;
+  font-weight: 500;
   font-size: 23px;
   margin-top: 13px;
   padding: 13px;
@@ -128,8 +130,9 @@ body{
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
 }
 .newAccount{
-  margin-top: 30px;
+  margin-top: 20px;
   font-size: 19px;
+  text-align: center;
 }
 .newAccount a{
   text-decoration: underline;
@@ -138,6 +141,89 @@ body{
   display: none;
 }
 
+.signupFormContainer{
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.signupForm {
+  width: 80%;
+  border-radius: 20px;
+  max-width: 550px;
+  margin: 1rem;
+  padding: 40px 50px 40px;
+  background: var(--c4);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.signupForm h1{
+  font-size: 1.5em;
+  text-align: center;
+  font-weight: 600;
+}
+.signupForm .inputs{
+  padding: 0.85rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.signupForm .inputs input, .signupForm select{
+  width: 100%;
+  font-size: 1.05rem;
+  padding: 0.5rem;
+  background: #fafafa;
+  border: 0;
+  border-radius: 5px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+.signupForm select{
+  color: gray;
+}
+.signupForm .inputField{
+  position: relative;
+}
+.signupForm .inputField label{
+  font-size: 1.1rem;
+}
+.signupForm .inputField i{
+  font-size: 20px;
+  color: rgba(0,0,0,0.7);
+  position: absolute;
+  top: 35px;
+  right: 20px;
+}
+.signupForm .inputField p{
+  text-align: left;
+  font-size: 0.9rem;
+  color: red;
+}
+.signupForm .fullNameInput{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+.signupForm .twoColumn{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.signupForm button{
+  width: 100%;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 1.5rem;
+  margin-top: 1.35rem;
+  padding: 0.7rem;
+  border-radius: 5px;
+  background: var(--c1);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
 
 .container{
   width: 100%;
@@ -522,11 +608,18 @@ body{
 /* Upload styles */
 .uploadContainer {
   width: 100%;
-  height: 100%;
-  padding: 0.5rem 0 0;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  overflowY: auto;
 }
 .uploadContainer .uploadForm{
   width: 100%;
+  max-width: 400px;
+  height: max-content;
   padding: 1rem;
   border-radius: 10px;
   background: var(--fa);
@@ -540,8 +633,25 @@ body{
   flex-direction: column;
   gap: 10px;
 }
-.uploadInputs input[type="text"]{
+.uploadInputs input, select{
+  width: 100%;
+  margin: 5px 0 0;
   padding: 0.2rem 0.35rem;
+}
+.uploadInputs label{
+  font-family: 'Questrial', 'Poppins';
+}
+.uploadInputs label p{
+  font-size: 0.9rem;
+  color: red;
+}
+.uploadInputs select{
+  color: gray;
+}
+.uploadInputs input[type="file"]{
+  padding: 0.45rem;
+  border-radius: 3px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
 }
 .uploadType .types{
   display: flex;
@@ -549,16 +659,52 @@ body{
 }
 .uploadType label{
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 3px;
 }
-.uploadForm button[type="submit"]{
+.uploadForm button{
   margin-top: 1rem;
   padding: 0.6rem 1.5rem;
   border: 0;
   border-radius: 5px;
   background: lightgreen;
   box-shadow: 0 0 2px rgba(0,0,0,1);
+}
+.results{
+  width: 100%;
+  max-width: 400px;
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 1rem;
+  border-radius: 5px;
+  background: var(--c4);
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  position: relative;
+}
+.results div{
+  display: grid;
+  grid-template-columns: 1fr 70px;
+  gap: 5px;
+}
+.results p{
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-family: 'Questrial', 'Poppins';
+}
+.results p:nth-child(2){
+  text-align: center;
+}
+.results .head{
+  border-bottom: 1px solid #000;
+}
+.results .head p{
+  font-weight: 500;
+  font-family: 'Poppins';
 }
 
 
@@ -608,7 +754,7 @@ body{
   
 }
 .manageUsers .datatable {
-  display: none;
+  visibility: hidden;
   box-shadow: 0 0 2px rgba(0,0,0,0.6);
 }
 
@@ -892,9 +1038,10 @@ body{
   }
   .formLogo{
     display: block;
+    text-align: center;
   }
   .formLogo img{
-    width: 60px;
+    width: 70px;
     aspect-ratio: 1/1;
   }
   .loginForm {
@@ -937,5 +1084,42 @@ body{
   .newAccount{
     margin-top: 20px;
     font-size: 1rem;
+  }
+  
+  
+  .signupFormContainer {
+    width: 100%;
+    padding: 2rem 0;
+  }
+  .signupForm{
+    width: 80%;
+    padding: 1.8rem;
+  }
+  .signupForm h1{
+    font-size: 1.15rem;
+    padding: 0 0 10px;
+  }
+  .signupForm .inputs{
+    padding: 0.3rem 0 0;
+  }
+  .signupForm .inputs input{
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+  .signupForm .fullNameInput{
+    grid-template-columns: 1fr;
+  }
+  .signupForm .twoColumn{
+    grid-template-columns: 1fr;
+  }
+  .signupForm .inputField i{
+    font-size: 0.95rem;
+    top: 23px;
+    right: 15px;
+  }
+  .signupForm button{
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.35rem 0.5rem;
   }
 }
