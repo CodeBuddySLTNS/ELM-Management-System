@@ -6,7 +6,7 @@ const dashboard = async (req, res) => {
   
   try {
     const accounts = await userModel.find({});
-    const students = await userModel.find({isVerified: false});
+    const students = await userModel.find({role: 'Student'});
     const pending = await userModel.find({isVerified: false});
     
     const result = {

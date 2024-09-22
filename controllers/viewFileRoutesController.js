@@ -48,12 +48,8 @@ const download = async (req, res) => {
   
   try {
     const found = await file.findOne({_id: fileId});
-    
     if (found) {
-      console.log('found');
       const { data } = await axios.get(found.url, { responseType: 'arraybuffer' });
-      
-      console.log(data)
       
       if (data) {
         res.send(data);
@@ -68,8 +64,6 @@ const download = async (req, res) => {
     res.status(500);
     console.log('Error download:', e)
   }
-  
-  console.log('not found')
 }
 
 module.exports = {

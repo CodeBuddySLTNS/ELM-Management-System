@@ -61,8 +61,8 @@ const signup = async (req, res) => {
       bcrypt.genSalt(10, (err, Salt) => {
         bcrypt.hash(userData.password, Salt, async (err, hash) => {
           userData.password = hash; // replace the password with hashed password
-          userData.isVerified = true; // new accounts will be marked as unverified
-          userData.role = 'Admin'; // new accounts will be marked as student
+          userData.isVerified = false; // new accounts will be marked as unverified
+          userData.role = 'Student'; // new accounts will be marked as student
           if (imgLink) userData.profileImg = imgLink; // attach the profile picture link
           
           try {

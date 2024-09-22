@@ -160,7 +160,7 @@
       const response = await axios.get(`/files/download?id=${fileId}`, { responseType: 'blob' });
       const fileBlob = response.data;
       const link = await window.URL.createObjectURL(new Blob([fileBlob]));
-      const a = document.querySelector('.downloadLink');
+      const a = document.createElement('a');
       a.href = link;
       a.download = fileName + '.pdf';
       a.click();
