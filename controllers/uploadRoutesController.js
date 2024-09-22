@@ -80,8 +80,10 @@ const upload = async (req, res) => {
 
  
  async function uploadFileData(file, newFileData, thumbnailLink, acc){
-  const filePath = path.join(__dirname, '..', 'cache', 'uploads', file.filename)
+  const filePath = path.join(__dirname, '..', 'cache', 'uploads', file.filename);
   try {
+    const exist = await fileModel.findOne({fileName: newFileData.filename || file.originalname});
+    if (exist) throw new Error('File already exist.');
     if (file.mimetype !== 'application/pdf') throw new Error('We only support pdf files.');
     const { id, name, webContentLink } = await uploadFile(newFileData.filename || file.originalname, filePath, file.mimetype);
     
