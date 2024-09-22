@@ -9,7 +9,7 @@
   
   <!-- FontAwesome icons -->
   <script src="https://kit.fontawesome.com/17d86c0acc.js" crossorigin="anonymous"></script>
-  <title>E-Book System</title>
+  <title>Upload | PAC, Inc - Salug Campus</title>
 </head>
 <body class="uploadBody">
   <div class="container">
@@ -67,18 +67,20 @@
             <i class="fa-brands fa-xing"></i>
           </button>
         </div>
-        <a href="/">
-          <li>
-            <i class="fa-solid fa-home"></i>
-            <p>Home</p>
-          </li>
-        </a>
-        <a href="/files/upload">
-          <li>
-            <i class="fa-solid fa-upload"></i>
-            <p>Upload Files</p>
-          </li>
-        </a>
+        <div class="links">
+          <a href="/">
+            <li>
+              <i class="fa-solid fa-home"></i>
+              <p>Home</p>
+            </li>
+          </a>
+          <a href="/files/upload">
+            <li>
+              <i class="fa-solid fa-upload"></i>
+              <p>Upload Files</p>
+            </li>
+          </a>
+        </div>
         <div class="navbarFooter">
           <div class="logout">
             <button class="logoutBtn">Logout</button>
@@ -185,10 +187,9 @@
         (status = true, document.querySelector('.filesError').textContent = 'Files must be from 1 to 10 only.') :
         files.files.length > 10 ?
           (status = true, document.querySelector('.filesError').textContent = 'Files must be from 1 to 10 only.') :
-          document.querySelector('.filesError').textContent = '';
-      files.files.length > 1 && single ?
-        (status = true, document.querySelector('.filesError').textContent = 'You selected single upload type.') :
-        document.querySelector('.filesError').textContent = '';
+          files.files.length > 1 && single ?
+            (status = true, document.querySelector('.filesError').textContent = 'You selected single upload type.') :
+            document.querySelector('.filesError').textContent = '';
       return status;
     }
     

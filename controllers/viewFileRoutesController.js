@@ -37,7 +37,7 @@ const readOnline = async (req, res) => {
     }
   } catch (e) {
     res.status(500);
-    console.log('Error readOnline:', e.message)
+    console.log('Error readOnline:', e)
   }
   
   console.log('not found')
@@ -66,7 +66,7 @@ const download = async (req, res) => {
     }
   } catch (e) {
     res.status(500);
-    console.log('Error download:', e.message)
+    console.log('Error download:', e)
   }
   
   console.log('not found')

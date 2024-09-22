@@ -32,7 +32,16 @@ window.addEventListener("load", async () => {
     if (data) {
       if (data.profileImg) document.querySelectorAll('.userImg').forEach(element => element.style.backgroundImage = `url('${data.profileImg}')`);
       document.querySelectorAll('.userName').forEach(element => element.textContent = data.firstName + ' ' + data.lastName);
-      document.querySelectorAll('.studentCourse').forEach(element => element.textContent = data.department.split('|')[0] + 'Student');
+      document.querySelectorAll('.studentCourse').forEach(element => element.textContent = data.department ? data.department.split('|')[0] + 'Student' : data.username === 'user' ? 'Test user' : 'Faculty');
+      if (data.role == 'Admin') {
+        document.querySelector('.links').innerHTML += `
+        <a href="/admin">
+          <li>
+            <i class="fa-solid fa-crown"></i>
+            <p>Admin Panel</p>
+          </li>
+        </a>`;
+      }
       
       const departmentInput = document.querySelector('.department');
       const categoryInput = document.querySelector('.category');

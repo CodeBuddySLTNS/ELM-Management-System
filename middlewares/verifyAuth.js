@@ -12,21 +12,18 @@ const verifyAuth = async (req, res, next) => {
           if (verifiedToken) {
             const user = await userModel.findOne({ _id: verifiedToken.id });
             if (!user) {
-              console.log('user not found.');
               return res.redirect('/auth/login')
             };
             
             res.locals.userId = verifiedToken.id;
             
             if (user._doc.isVerified) {
-              console.log(req.path, 'authorized');
               return next();
             }
             systemConfig.onlyVerifiedUsers ?
               res.status(401).sendFile(path.join(__dirname, '..', 'views', 'unauthorized.html')) :
               next();
           } else {
-            console.log(req.path, 'unauthorized.')
             res.redirect('/auth/login');
             return;
           }
@@ -39,7 +36,6 @@ const verifyAuth = async (req, res, next) => {
       });
     } else {
       if (systemConfig.DevMode) return next();
-      console.log(req.path, 'unauthorized.');
       res.redirect('/auth/login');
       return;
     };

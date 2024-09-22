@@ -32,9 +32,7 @@ const upload = async (req, res) => {
             });
             
           // delete the image file
-          fs.unlink(thumbnailPath, (err) => err ? 
-            console.log(`Error deleting the file ${thumbnailPath}.`) : 
-            console.log(`${thumbnailPath} deleted.`));
+          fs.unlink(thumbnailPath, (err) => {});
           
           loopAndUpload(img.data.link);
         } catch (e) {
@@ -84,7 +82,8 @@ const upload = async (req, res) => {
  async function uploadFileData(file, newFileData, thumbnailLink, acc){
   const filePath = path.join(__dirname, '..', 'cache', 'uploads', file.filename)
   try {
-    const { id, name, webContentLink } = await uploadFile(newFileData.filename || file.originalname, filePath);
+    if (file.mimetype !== 'application/pdf') throw new Error('We only support pdf files.');
+    const { id, name, webContentLink } = await uploadFile(newFileData.filename || file.originalname, filePath, file.mimetype);
     
     const pdfData = {
       fileName: name,
@@ -102,16 +101,10 @@ const upload = async (req, res) => {
     await fileModel.create(pdfData);
     
     // delete the file
-    fs.unlink(filePath, (err) => {
-      err ? console.log(`Error deleting the file ${file.filename}.`) :
-        console.log(`${file.filename} deleted.`);
-    });
+    fs.unlink(filePath, (err) => {});
   } catch (e) {
     // delete the file
-    fs.unlink(filePath, (err) => {
-      err ? console.log(`Error deleting the file ${file.filename}.`) :
-        console.log(`${file.filename} deleted.`);
-    });
+    fs.unlink(filePath, (err) => {});
     throw new Error(e);
   }
 }
@@ -130,7 +123,7 @@ async function authorize(){
 }
 
 // A Function that will upload the desired file to google drive folder
-async function uploadFile(fileName, filePath){
+async function uploadFile(fileName, filePath, mimetype){
   try {
     const drive = google.drive({version: 'v3', auth: await authorize()});
     
@@ -143,7 +136,7 @@ async function uploadFile(fileName, filePath){
       resource: fileMetaData,
       media: {
         body: fs.createReadStream(filePath), // files that will get uploaded
-        mimeType: 'application/pdf'
+        mimeType: mimetype
       },
       fields: 'id, name, hasThumbnail, thumbnailLink'
      });

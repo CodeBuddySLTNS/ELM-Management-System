@@ -73,18 +73,20 @@
             <i class="fa-brands fa-xing"></i>
           </button>
         </div>
-        <a href="/">
-          <li>
-            <i class="fa-solid fa-home"></i>
-            <p>Home</p>
-          </li>
-        </a>
-        <a href="/files/upload">
-          <li>
-            <i class="fa-solid fa-upload"></i>
-            <p>Upload Files</p>
-          </li>
-        </a>
+        <div class="links">
+          <a href="/">
+            <li>
+              <i class="fa-solid fa-home"></i>
+              <p>Home</p>
+            </li>
+          </a>
+          <a href="/files/upload">
+            <li>
+              <i class="fa-solid fa-upload"></i>
+              <p>Upload Files</p>
+            </li>
+          </a>
+        </div>
         <div class="navbarFooter">
           <div class="logout">
             <button class="logoutBtn">Logout</button>
@@ -106,7 +108,7 @@
                   <th>Username</th>
                   <th>Email</th>
                   <th>Role</th>
-                  <th>isVerified</th>
+                  <th>Acc. Status</th>
                   <th>Actions</th>
               </tr>
           </thead>
@@ -152,14 +154,16 @@
           usersTableBody.innerHTML += `
           <tr>
             <td>${user.fullName}</td>
-            <td>${user.yearLevel}</td>
-            <td>${user.department.split('|')[0].trim()}</td>
+            <td>${user.yearLevel ? user.yearLevel : 'N/A'}</td>
+            <td>${user.department ? user.department.split('|')[0].trim() : 'N/A'}</td>
             <td>${user.username}</td>
             <td>${user.email}</td>
             <td>${user.role}</td>
-            <td>${user.isVerified}</td>
             <td>
               <button ${user.isVerified ? 'disabled="true"' : ''} onclick="verifyAccount(this)">${user.isVerified ? 'verified' : 'verify'}</button>
+            </td>
+            <td>
+              <button ${user.role.toLowerCase() === 'admin' ? 'disabled="true"' : ''} onclick="makeAdmin(this)">Make Admin</button>
             </td>
         </tr>`
         }
@@ -181,16 +185,32 @@
         });
       }
     }
-    async function verifyAccount(event){
-      const username = event.parentElement.parentElement.childNodes[7].textContent;
-      event.textContent = 'verifying...';
+    async function verifyAccount(element){
+      const username = element.parentElement.parentElement.childNodes[7].textContent;
+      element.textContent = 'verifying...';
       try{
         const {data} = await axios.patch('/admin/manage/verify', {username});
-        event.textContent = 'verified';
-        event.disabled = true;
+        element.textContent = 'verified';
+        element.disabled = true;
       } catch (e) {
-        alert(`Unable to verify ${event.parentElement.parentElement.childNodes[1].textContent}`);
-        event.textContent = 'verify';
+        alert(`Unable to verify ${element.parentElement.parentElement.childNodes[1].textContent}`);
+        element.textContent = 'verify';
+        console.log(e);
+      }
+    }
+    async function makeAdmin(element){
+      const username = element.parentElement.parentElement.childNodes[7].textContent;
+      element.textContent = 'processing...';
+      
+      if (!confirm(`Are you sure you want to promote ${element.parentElement.parentElement.childNodes[1].textContent} as admin?`)) return element.textContent = 'Make Admin';
+      try{
+        const {data} = await axios.patch('/admin/manage/promote', {username});
+        element.disabled = true;
+        element.parentElement.parentElement.childNodes[11].textContent = 'Admin';
+        element.textContent = 'Make Admin';
+      } catch (e) {
+        alert(`Unable to verify ${element.parentElement.parentElement.childNodes[1].textContent}`);
+        element.textContent = 'Make Admin';
         console.log(e);
       }
     }

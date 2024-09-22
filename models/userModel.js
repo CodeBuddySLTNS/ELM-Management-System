@@ -18,11 +18,9 @@ const userSchema = new mongoose.Schema({
   },
   yearLevel: {
     type: Number,
-    required: true
   },
   department: {
     type: String,
-    required: true
   },
   email: {
     type: String,

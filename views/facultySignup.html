@@ -21,7 +21,7 @@
           <img src="/images/paclogo.png" alt="logo">
         </div>
         <div class="loginTitle">
-          <h1>Create account</h1>
+          <h1>Create faculty account</h1>
         </div>
         <div class="inputs">
           <div class="fullNameInput">
@@ -79,25 +79,6 @@
               <p class="confirmPasswordError"></p>
             </div>
           </div>
-          <div class="twoColumn">
-            <div class="inputField">
-              <label>
-                Year Level:
-                <input class="yearLevel" type="number">
-              </label>
-              <p class="yearLevelError"></p>
-            </div>
-            <div class="inputField">
-              <label>
-                Department:
-                <select class="department">
-                  <option value="" selected="true" disabled="true">Select department...</option>
-                  <option value="BSIT | Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
-                </select>
-              </label>
-              <p class="departmentError"></p>
-            </div>
-          </div>
           <div class="inputField">
             <label>
               Profile Picture (optional):
@@ -118,9 +99,7 @@
     const firstName = document.querySelector('.firstName');
     const middleName = document.querySelector('.middleName');
     const lastName = document.querySelector('.lastName');
-    const department = document.querySelector('.department');
     const email = document.querySelector('.email');
-    const yearLevel = document.querySelector('.yearLevel');
     const username = document.querySelector('.username');
     const password = document.querySelector('.password');
     const confirmPassword = document.querySelector('.confirmPassword');
@@ -138,14 +117,6 @@
       lastName.value.trim() === "" ?
         ( isError = true, document.querySelector('.lastNameError').textContent = "Last name is required.") :
         document.querySelector('.lastNameError').textContent = "";
-      department.value.trim() === "" ?
-        ( isError = true, document.querySelector('.departmentError').textContent = "Department is required.") :
-        document.querySelector('.departmentError').textContent = "";
-      yearLevel.value.trim() === "" ?
-        ( isError = true, document.querySelector('.yearLevelError').textContent = "Year Level is required.") :
-        Number(yearLevel.value) < 1 || Number(yearLevel.value) > 4 ?
-        ( isError = true, document.querySelector('.yearLevelError').textContent = "Year Level must be from 1 to 4.") :
-        document.querySelector('.yearLevelError').textContent = "";
       email.value.trim() === "" ?
         ( isError = true, document.querySelector('.emailError').textContent = "Email is required.") :
         document.querySelector('.emailError').textContent = "";
@@ -178,8 +149,6 @@
         firstName: firstName.value.trim(),
         middleName: middleName.value.trim(),
         lastName: lastName.value.trim(),
-        yearLevel: Number(yearLevel.value.trim()),
-        department: department.value.trim(),
         email: email.value.trim(),
         username: username.value.trim(),
         password: password.value.trim(),
@@ -195,7 +164,7 @@
       }
       
       try {
-        const {data} = await axios.post('/auth/signup', formData);
+        const {data} = await axios.post('/auth/signup/faculty', formData);
         if (data.loggedIn) {
           alert('Account created successfully.')
           window.location.href = '/'; // redirect to homepage once logged in
@@ -217,20 +186,6 @@
         document.querySelector('.signupBtn').innerText = 'Sign in';
       }
     }
-    
-    window.addEventListener("load", async () => {
-      try {
-        const {data:configs} = await axios.get('/config/signup');
-        if (configs) {
-          for (dep of configs.departments) {
-            department.innerHTML += `<option value="${dep}">${dep.split('|')[1].trim()}</option>`
-          }
-        }
-      } catch (e) {
-        alert(e.message);
-        console.log(e);
-      }
-    })
   </script>
 </body>
 </html>

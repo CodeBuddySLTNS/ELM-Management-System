@@ -18,6 +18,7 @@ const createToken = (id) => {
 const signupPage = async (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'signup.html'));
 }
+
 const signup = async (req, res) => {
   const userData = req.body;
   const profileImg = req.files.profileImg && req.files.profileImg.length > 0 ? req.files.profileImg[0] : null;
@@ -50,19 +51,86 @@ const signup = async (req, res) => {
   
   async function registerNewUser(imgLink) {
     try {
-      const alreadyExists = await userModel.findOne({fullName: userData.fullName});
+      const accountExist = await userModel.findOne({fullName: userData.fullName});
+      const usernameExist = await userModel.findOne({fullName: userData.username});
       
-      if (alreadyExists) {
-        console.log('alreadyExists')
-        return res.status(409).send(`Account already exist.`);
+      if (accountExist) return res.json({loggedIn: false, accountExist: true});
+      if (usernameExist) return res.json({loggedIn: false, usernameExist: true});
+        
+      // hash the password
+      bcrypt.genSalt(10, (err, Salt) => {
+        bcrypt.hash(userData.password, Salt, async (err, hash) => {
+          userData.password = hash; // replace the password with hashed password
+          userData.isVerified = true; // new accounts will be marked as unverified
+          userData.role = 'Admin'; // new accounts will be marked as student
+          if (imgLink) userData.profileImg = imgLink; // attach the profile picture link
+          
+          try {
+            const newAccount = await userModel.create(userData);
+          
+            const token = await createToken(newAccount._id);
+            res.cookie('jwt', token, {httpOnly: true, maxAge: expiration * 1000});
+            res.status(201).json({ id: newAccount._id, loggedIn: true })
+          } catch (e) {
+            res.status(500).json({ error: e.message })
+          }
+        })
+      })
+    } catch (e) {
+      res.status(500).json({ error: e.message })
+    }
+  }
+  console.log(userData);
+}
+
+const facultySignupPage = async (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'views', 'facultySignup.html'));
+}
+
+const facultySignup = async (req, res) => {
+  const userData = req.body;
+  const profileImg = req.files.profileImg && req.files.profileImg.length > 0 ? req.files.profileImg[0] : null;
+  
+  if (profileImg) {
+    const filePath = path.join(__dirname, '..', 'cache', 'uploads', profileImg.filename);
+    fs.readFile(filePath, async (err, fileBuffer) => {
+      try {
+        const {data:img} = await axios.post(systemConfig.imgurUrl, fileBuffer, {
+          headers: {
+            "Authorization": process.env.IMGUR_CLIENT_ID,
+            "Content-Type": "application/octet-stream"
+          }
+        });
+        
+        // delete the image file
+        fs.unlink(filePath, (err) => err ? `Error deleting the file ${filePath}.` : `${filePath} deleted.`);
+        
+        // call the function to register the new user
+        registerNewUser(img.data.link);
+        
+      } catch (e) {
+        res.status(500);
+        console.log(e);
       }
+    })
+  } else {
+    registerNewUser();
+  }
+  
+  async function registerNewUser(imgLink) {
+    try {
+      const accountExist = await userModel.findOne({fullName: userData.fullName});
+      const usernameExist = await userModel.findOne({username: userData.username});
+      
+      if (accountExist) return res.json({loggedIn: false, accountExist: true});
+      if (usernameExist) return res.json({loggedIn: false, usernameExist: true});
       
       // hash the password
       bcrypt.genSalt(10, (err, Salt) => {
         bcrypt.hash(userData.password, Salt, async (err, hash) => {
           userData.password = hash; // replace the password with hashed password
           userData.isVerified = false; // new accounts will be marked as unverified
-          userData.role = 'Student'; // new accounts will be marked as student
+          userData.role = 'Faculty'; // set the role to Faculty
           if (imgLink) userData.profileImg = imgLink; // attach the profile picture link
           
           try {
@@ -119,5 +187,7 @@ module.exports = {
   login,
   signupPage,
   loginPage,
+  facultySignupPage,
+  facultySignup,
   logout,
 }

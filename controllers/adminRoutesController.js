@@ -2,7 +2,23 @@ const path = require('path');
 const userModel = require('../models/userModel');
 
 const dashboard = async (req, res) => {
-  res.send('admin dashboard');
+  if (!req.query.data) return res.sendFile(path.join(__dirname, '..', 'views', 'adminPanel.html'));
+  
+  try {
+    const accounts = await userModel.find({});
+    const students = await userModel.find({isVerified: false});
+    const pending = await userModel.find({isVerified: false});
+    
+    const result = {
+      totalAccounts: accounts.length, 
+      totalStudents: students.length, 
+      pendingAccounts: pending.length, 
+    }
+    res.json(result);
+  } catch (e) {
+    res.status(500).send(e.message);
+    console.log(e);
+  }
 }
 
 const manageUsers = async (req, res) => {
@@ -20,7 +36,6 @@ const manageUsers = async (req, res) => {
       isVerified: user.isVerified,
       role: user.role
     }));
-    console.log(users)
     res.send(users);
   } catch (e) {
     res.status(500).json({error: e.message});
@@ -30,11 +45,20 @@ const manageUsers = async (req, res) => {
 
 const verifyUsers = async (req, res) => {
   const {username} = req.body;
-  console.log(username);
   try {
     const user = await userModel.findOneAndUpdate({username}, {isVerified: true}, {new: true});
     res.json({success: true})
-    console.log(user);
+  } catch (e) {
+    res.status(500).json({error: e.message})
+    console.log(e);
+  }
+}
+
+const makeAdmin = async (req, res) => {
+  const {username} = req.body;
+  try {
+    const user = await userModel.findOneAndUpdate({username}, {role: 'Admin'}, {new: true});
+    res.json({success: true})
   } catch (e) {
     res.status(500).json({error: e.message})
     console.log(e);
@@ -45,4 +69,5 @@ module.exports = {
   dashboard,
   manageUsers,
   verifyUsers,
+  makeAdmin,
 }

@@ -137,6 +137,9 @@ body{
 .newAccount a{
   text-decoration: underline;
 }
+.newAccount .link{
+  text-decoration: none;
+}
 .formLogo{
   display: none;
 }
@@ -403,26 +406,41 @@ body{
   transition: 0.8s;
 }
 .navbar{
+  width: 100%;
   height: 100%;
-  padding: 10px 0px;
+  padding: 0 5px;
   background: var(--c2);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 }
 .navbar a li{
   width: 100%;
+  white-space: nowrap;
   font-size: 23px;
   color: #000;
-  padding: 5px 15px;
+  padding: 5px;
+  margin: 20px 0 0;
+  border-radius: 5px;
   display: flex;
   gap: 20px;
+  justify-content: center;
   align-items: center;
+  transition: 0.6s;
 }
 .navbar .closeMenu{
   display: none;
 }
 .navbar .userInfo{
   display: none;
+}
+.navbar a li:hover{
+  background: rgba(0,0,0,0.1);
+}
+.navbar a li p{
+  display: none;
+}
+.navbar a li i{
+  padding: 7px 5px;
 }
 .navbarFooter{
   display: none;
@@ -555,10 +573,19 @@ body{
   width: 100%;
   height: 225px;
   border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: var(--c2);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+}
+.image_descriptions .paperImage span{
+  font-weight: bold;
+  font-size: 1rem;
+  color: gray;
+  text-shadow: 0 0 2px rgba(250,250,250,0.4);
 }
 .image_descriptions .descriptions{
   font-size: 20px;
@@ -736,23 +763,63 @@ body{
   padding: 40px 60px;
 }
 .adminPanelContainer .adminPanel{
-  
+  visibility: hidden;
 }
 .adminPanel .cards{
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
-  grid-auto-rows: 100px;
+  grid-template-columns: repeat(auto-fit, minmax(170px,1fr));
+  grid-auto-rows: 90px;
   gap: 20px;
 }
 .adminPanel .cards .card{
+  padding: 1rem;
+  color: #000;
+  display: flex;
+  justify-content: space-between;
+  border: 0;
+  border-radius: 5px;
   background: var(--c3);
+  box-shadow: 0 0 2.5px 1px rgba(0,0,0,0.15);
+  position: relative;
+}
+.adminPanel .card span{
+  align-self: end;
+  font-size: 1.4rem;
+}
+.adminPanel .card p{
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+.adminPanel .card p span{
+  font-size: 1rem;
+  font-family: 'Questrial', 'Poppins';
+}
+.adminPanel .card i{
+  font-size: 1.8rem;
+  opacity: 0.15;
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+}
+.adminPanel .configurations{
+  margin: 20px 0 0;
+}
+.adminPanel .configurations h3{
+  font-weight: 500;
+}
+.adminPanel .autoVerify{
+  width: max-content;
+  margin: 10px 0 0;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 5px;
+  background: #ff9b9b;
+  box-shadow: 0 0 2.5px 1px rgba(0,0,0,0.15);
 }
 
 /* Admin manage users */
-.manageUsers{
-  
-}
 .manageUsers .datatable {
   visibility: hidden;
   box-shadow: 0 0 2px rgba(0,0,0,0.6);
@@ -825,6 +892,7 @@ body{
   .navbar{
     width: 65vw;
     height: 100vh;
+    padding: 10px 5px;
     position: absolute;
     top: 0;
     right: 0;
@@ -841,9 +909,11 @@ body{
   .navbar a li i{
     display: none;
   }
-  .toggleMenu{
-    width: 100vw;
-    right: 0;
+  .navbar a li p{
+    display: block;
+  }
+  .navbar .active{
+    box-shadow: none;
   }
   .navbar a li:hover{
     text-decoration: underline;
@@ -861,6 +931,10 @@ body{
     background: var(--c2);
     overflow: hidden;
     transition: 0.6s;
+  }
+  .toggleMenu{
+    width: 100vw;
+    right: 0;
   }
   .navbar .profile{
     width: 100%;

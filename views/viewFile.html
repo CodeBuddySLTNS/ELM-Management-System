@@ -9,7 +9,7 @@
 
   <!-- FontAwesome icons -->
   <script src="https://kit.fontawesome.com/17d86c0acc.js" crossorigin="anonymous"></script>
-  <title>E-Book System</title>
+  <title>PAC, Inc - Salug Campus</title>
 </head>
 <body>
   <div class="container">
@@ -67,18 +67,20 @@
             <i class="fa-brands fa-xing"></i>
           </button>
         </div>
-        <a href="/">
-          <li>
-            <i class="fa-solid fa-home"></i>
-            <p>Home</p>
-          </li>
-        </a>
-        <a href="/files/upload">
-          <li>
-            <i class="fa-solid fa-upload"></i>
-            <p>Upload Files</p>
-          </li>
-        </a>
+        <div class="links">
+          <a href="/">
+            <li>
+              <i class="fa-solid fa-home"></i>
+              <p>Home</p>
+            </li>
+          </a>
+          <a href="/files/upload">
+            <li>
+              <i class="fa-solid fa-upload"></i>
+              <p>Upload Files</p>
+            </li>
+          </a>
+        </div>
         <div class="navbarFooter">
           <div class="logout">
             <button class="logoutBtn">Logout</button>
@@ -103,11 +105,11 @@
                       Read Online
                     </button>
                   </a>
-                  <a class="downloadLink" href="#">
+                  <div class="downloadLink">
                     <button class="download">
-                      Download PDF
+                      Download
                     </button>
-                  </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -135,13 +137,14 @@
         
         document.querySelector('.centerViewResPaper').style.display = 'flex';
         document.querySelector('.loader').style.display = 'none';
+        file.thumbnail ? document.querySelector(".paperImage").style.backgroundImage = `url("${file.thumbnail}")` : document.querySelector(".paperImage").innerHTML = '<span>PDF</span>';
+        
         document.querySelector(".fileInfo").innerHTML = `
           <p>${file.name}</p>
           <p class="infos">Department: ${file.department}</p>
           <p class="infos">Uploader: ${file.uploader}</p>
           <p class="infos">Category: ${file.category}</p>
           `;
-        document.querySelector(".paperImage").style.backgroundImage = `url("${file.imageUrl}")`;
         document.querySelector(".readOnlineLink").href = `/files/readonline?id=${fileId}`;
         const downloadBtn = document.querySelector('.download');
         downloadBtn.onclick = (event) => {

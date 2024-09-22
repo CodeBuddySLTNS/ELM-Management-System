@@ -4,9 +4,6 @@ const dotenv = require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const dbConnect = require('./config/dbConnection');
 
-// require('./models/userModel').deleteMany({}).then(d => console.log(d))
-// require('./models/fileModel').deleteMany({}).then(d => console.log(d))
-
 const app = express();
 const port = 5000;
 
