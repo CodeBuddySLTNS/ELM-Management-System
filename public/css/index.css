@@ -549,7 +549,7 @@ body{
 /* View esearch papers design*/
 .centerViewResPaper{
   width: 100%;
-  display: flex;
+  display: none;
   justify-content: center;
 }
 .viewResPaper{
