@@ -27,7 +27,7 @@ app.use('/config', require('./routes/configRoutes'));
 
 // only run the server when connected to database
 dbConnect().then((res) => {
-  console.log('Database connected:', res.connection.name, res.connection.host);
+  console.log('Database connected:', res.connection.name);
   app.listen(port, () => console.log(`Server running on port ${port}`))})
   .catch((err) => {
     console.log('Database connection error:', err.message);

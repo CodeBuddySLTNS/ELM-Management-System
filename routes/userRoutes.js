@@ -5,6 +5,6 @@ const {
   fetchUserData,
 } = require('../controllers/userRoutesController')
 
-userRoutes.get('/', fetchUserData)
+userRoutes.get('/', verifyAuth, fetchUserData)
 
 module.exports = userRoutes;

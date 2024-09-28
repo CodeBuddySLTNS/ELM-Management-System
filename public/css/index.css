@@ -899,7 +899,7 @@ body{
     top: 0;
     right: -100vw;
     background: rgba(0,0,0,0.1);
-    transition: 0.8s;
+    transition: 0.2s;
   }
   .navbar{
     width: 65vw;
@@ -942,7 +942,7 @@ body{
     border-radius: 10px;
     background: var(--c2);
     overflow: hidden;
-    transition: 0.6s;
+    transition: 0.8s;
   }
   .toggleMenu{
     width: 100vw;

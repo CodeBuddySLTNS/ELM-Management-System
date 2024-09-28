@@ -8,10 +8,10 @@ const {
 } =require('../controllers/viewFileRoutesController');
 
 
-viewFileRoutes.get('/file', viewFile)
+viewFileRoutes.get('/file', verifyAuth, viewFile)
 
-viewFileRoutes.get('/readonline', readOnline)
+viewFileRoutes.get('/readonline', verifyAuth, readOnline)
 
-viewFileRoutes.get('/download', download)
+viewFileRoutes.get('/download', verifyAuth, download)
 
 module.exports = viewFileRoutes;

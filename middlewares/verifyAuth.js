@@ -5,13 +5,17 @@ const systemConfig = require('../config/systemConfig');
 
 const verifyAuth = async (req, res, next) => {
   try {
+    const whiteListed = ["/user", "/file", "/files/file", "/files/readonline", "/files/file/download"];
     const token = req.cookies?.jwt;
+    
     if (token) {
       jwt.verify(token, process.env.SYSTEM_SECRET_KEY, async (err, verifiedToken) => {
         try {
           if (verifiedToken) {
             const user = await userModel.findOne({ _id: verifiedToken.id });
+            
             if (!user) {
+              if (whiteListed.includes(req._parsedOriginalUrl.pathname)) return next();
               return res.redirect('/auth/login')
             };
             
@@ -28,6 +32,8 @@ const verifyAuth = async (req, res, next) => {
               res.status(401).sendFile(path.join(__dirname, '..', 'views', 'unauthorized.html')) :
               next();
           } else {
+            console.log(whiteListed.includes(req._parsedOriginalUrl.pathname), req._parsedOriginalUrl.pathname)
+            if (whiteListed.includes(req._parsedOriginalUrl.pathname)) return next();
             res.redirect('/auth/login');
             return;
           }
@@ -39,12 +45,15 @@ const verifyAuth = async (req, res, next) => {
         }
       });
     } else {
+      console.log(whiteListed.includes(req._parsedOriginalUrl.pathname), req._parsedOriginalUrl.pathname)
+      if (whiteListed.includes(req._parsedOriginalUrl.pathname)) return next();
       if (systemConfig.DevMode) return next();
       res.redirect('/auth/login');
       return;
     };
   } catch (e) {
-    console.log(e)
+    console.log(e);
+    res.status(500).send('Internal server error.');
   }
 }
 
