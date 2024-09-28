@@ -50,9 +50,10 @@ const upload = async (req, res) => {
           const results = new Array();
           for (file of files) {
             try {
-              await uploadFileData(file, newFileData, thumbnailLink, acc);
+              const id = await uploadFileData(file, newFileData, thumbnailLink, acc);
               results.push({
                 filename: newFileData.filename || file.originalname,
+                fileId: id,
                 message: 'uploaded successfully.',
                 error: false
               });
@@ -100,10 +101,12 @@ const upload = async (req, res) => {
     
     if (thumbnailLink) pdfData.thumbnail = thumbnailLink;
     
-    await fileModel.create(pdfData);
+    const {_id} = await fileModel.create(pdfData);
     
     // delete the file
     fs.unlink(filePath, (err) => {});
+    
+    return _id;
   } catch (e) {
     // delete the file
     fs.unlink(filePath, (err) => {});

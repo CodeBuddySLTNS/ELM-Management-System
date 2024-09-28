@@ -713,7 +713,7 @@ body{
 }
 .results div{
   display: grid;
-  grid-template-columns: 1fr 70px;
+  grid-template-columns: 1fr 65px 70px;
   gap: 5px;
 }
 .results p{
@@ -723,8 +723,15 @@ body{
   overflow: hidden;
   font-family: 'Questrial', 'Poppins';
 }
-.results p:nth-child(2){
+.results span{
+  display: none;
+}
+.results p:nth-child(3), .results p:nth-child(2){
   text-align: center;
+}
+.results .link{
+  text-align: center;
+  font-size: 0.9rem;
 }
 .results .head{
   border-bottom: 1px solid #000;
@@ -863,6 +870,11 @@ body{
   font-size: 1rem;
   font-family: 'Questrial', 'Poppins';
 }
+.unauthorized a{
+  width: 100%;
+  text-align: center;
+  color: #000;
+}
 
 @keyframes l22{
   100%{background-position: left}
@@ -1000,6 +1012,7 @@ body{
   .navbarFooter{
     display: block;
     width: 100%;
+    padding: 0 0 55px;
     position: absolute;
     left: 0;
     bottom: 0;

@@ -65,6 +65,10 @@ const makeAdmin = async (req, res) => {
   }
 }
 
+const allowStudentUpload = async (req, res) => {
+  
+}
+
 module.exports = {
   dashboard,
   manageUsers,

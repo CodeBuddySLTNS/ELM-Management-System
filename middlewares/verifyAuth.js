@@ -18,6 +18,10 @@ const verifyAuth = async (req, res, next) => {
             res.locals.userId = verifiedToken.id;
             
             if (user._doc.isVerified) {
+              console.log(user._doc.role, req.path)
+              if (req.path === '/upload' && user._doc.role === 'Student') {
+                return res.sendFile(path.join(__dirname, '..', 'views', 'uploadNotAllowed.html')) 
+              }
               return next();
             }
             systemConfig.onlyVerifiedUsers ?

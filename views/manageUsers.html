@@ -7,8 +7,9 @@
   
   
   <!-- BootStrap styles -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.dataTables.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.11/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.css">
   
   <link rel="stylesheet" href="/css/index.css">
   
@@ -139,8 +140,10 @@
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.5/axios.min.js"></script>
   <script src="/script/index.js"></script>
-  <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js" type="text/javascript" charset="utf-8"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.dataTables.js" type="text/javascript" charset="utf-8"></script>
   <script>
     const usersTableBody = document.querySelector('.users');
     const datatable = document.querySelector('.datatable');
@@ -172,13 +175,15 @@
         new DataTable('#datatable', {
           columnDefs: [
             {className: "dt-center", targets: "_all"}
-          ]
+          ],
+          responsive: true
         });
       } catch (e) {
         alert(e)
         document.querySelector('.loader').style.display = 'none';
         datatable.style.visibility = 'visible';
         new DataTable('#datatable', {
+          responsive: true,
           columnDefs: [
             {className: "dt-center", targets: "_all"}
           ]

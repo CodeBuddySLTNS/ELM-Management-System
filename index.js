@@ -4,6 +4,10 @@ const dotenv = require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const dbConnect = require('./config/dbConnection');
 
+// require('./models/configModel').findOne({_id: require('./config/systemConfig').configId}).then(f => {
+//   require('./models/configModel').findOneAndUpdate({_id: f._id}, {categories: [...f.categories, 'Arduino',]}, {new: true}).then(d=>console.log(d))
+// })
+
 const app = express();
 const port = 5000;
 

@@ -142,6 +142,7 @@
         <div class="results">
           <div class="head">
             <p>Filename</p>
+            <p>Link</p>
             <p>Status</p>
           </div>
         </div>
@@ -226,6 +227,10 @@
           results.innerHTML += `
             <div class="file">
               <p>${d.filename}</p>
+              <p class="link">
+                <span>${window.location.origin + '/files/file?id=' + d.fileId}</span>
+                <i class="fa-solid fa-copy" onclick="copyLink(this)"></i>
+              </p>
               <p style="color:${d.error ? 'red">failed' : 'green">success'}</p>
             </div>`;
         }
@@ -237,6 +242,12 @@
         document.querySelector('.uploadBtn').textContent = 'Upload';
         document.querySelector('.uploadBtn').disabled = false;
       }
+    }
+    
+    function copyLink(e){
+      navigator.clipboard.writeText(e.previousElementSibling.textContent);
+      document.querySelector('.link i').classList.add('fa-check');
+      document.querySelector('.link i').disabled = true;
     }
   </script>
 </body>
