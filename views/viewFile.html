@@ -110,14 +110,19 @@
                       Download
                     </button>
                   </div>
+                  <div class="copyLink">
+                    <button class="copy" onclick="copyLink()">
+                      <i class="fa-solid fa-link"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="loader"></div>
-      </div>
+<!--       <div class="loader"></div>
+ -->      </div>
   </div>
   
   <script src="/script/index.js"></script>
@@ -166,9 +171,11 @@
       a.click();
     }
     
-    // Auto Scroll
-    function scrollBottom(){
-      comments.scrollTop = 0;
+    // copy the link address
+    function copyLink(){
+      navigator.clipboard.writeText(window.location.href);
+      document.querySelector('.fa-link').classList.add('fa-check');
+      document.querySelector('.fa-link').disabled = true;
     }
   </script>
 </body>

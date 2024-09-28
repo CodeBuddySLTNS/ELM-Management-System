@@ -22,7 +22,6 @@ const verifyAuth = async (req, res, next) => {
             res.locals.userId = verifiedToken.id;
             
             if (user._doc.isVerified) {
-              console.log(user._doc.role, req.path)
               if (req.path === '/upload' && user._doc.role === 'Student') {
                 return res.sendFile(path.join(__dirname, '..', 'views', 'uploadNotAllowed.html')) 
               }
@@ -32,7 +31,6 @@ const verifyAuth = async (req, res, next) => {
               res.status(401).sendFile(path.join(__dirname, '..', 'views', 'unauthorized.html')) :
               next();
           } else {
-            console.log(whiteListed.includes(req._parsedOriginalUrl.pathname), req._parsedOriginalUrl.pathname)
             if (whiteListed.includes(req._parsedOriginalUrl.pathname)) return next();
             res.redirect('/auth/login');
             return;
@@ -45,7 +43,6 @@ const verifyAuth = async (req, res, next) => {
         }
       });
     } else {
-      console.log(whiteListed.includes(req._parsedOriginalUrl.pathname), req._parsedOriginalUrl.pathname)
       if (whiteListed.includes(req._parsedOriginalUrl.pathname)) return next();
       if (systemConfig.DevMode) return next();
       res.redirect('/auth/login');

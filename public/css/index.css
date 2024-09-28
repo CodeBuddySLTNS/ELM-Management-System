@@ -549,7 +549,7 @@ body{
 /* View esearch papers design*/
 .centerViewResPaper{
   width: 100%;
-  display: none;
+  display: flex;
   justify-content: center;
 }
 .viewResPaper{
@@ -607,6 +607,7 @@ body{
 .downloadRead{
   width: 100%;
   display: flex;
+  justify-content: space-between;
   gap: 10px;
 }
 .downloadRead button{
@@ -614,13 +615,16 @@ body{
   padding: 8px 10px;
   border-radius: 5px;
 }
-.readOnline{
+.downloadRead .readOnline, .copy{
   color: #000;
   border: 1px solid rgba(0,0,0,0.05);
   background: #fafafa;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 }
-.download{
+.downloadRead .copy{
+  width: 45px;
+}
+.downloadRead .download{
   color: #fff;
   border: 0;
   background: #000;
