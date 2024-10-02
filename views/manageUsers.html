@@ -109,7 +109,7 @@
                   <th>Username: </th>
                   <th>Email: </th>
                   <th>Role: </th>
-                  <th>Account Status: </th>
+                  <th>Acc. Status: </th>
                   <th>Actions: </th>
               </tr>
           </thead>
@@ -173,10 +173,10 @@
         document.querySelector('.loader').style.display = 'none';
         datatable.style.visibility = 'visible';
         new DataTable('#datatable', {
+          responsive: true,
           columnDefs: [
             {className: "dt-center", targets: "_all"}
           ],
-          responsive: true
         });
       } catch (e) {
         alert(e)
@@ -191,7 +191,16 @@
       }
     }
     async function verifyAccount(element){
-      const username = element.parentElement.parentElement.childNodes[7].textContent;
+      function getUsername() {
+        const nodes = element.parentElement.parentElement.parentElement.childNodes;
+        for (node of nodes) {
+          if (node.childNodes[0].textContent.trim() === 'Username:') {
+            return node.childNodes[2].textContent.trim();
+          }
+        }
+        return null;
+      }
+      const username = getUsername() || element?.parentElement?.parentElement?.childNodes[7]?.textContent;
       element.textContent = 'verifying...';
       try{
         const {data} = await axios.patch('/admin/manage/verify', {username});
