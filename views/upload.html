@@ -9,20 +9,18 @@
   
   <!-- FontAwesome icons -->
   <script src="https://kit.fontawesome.com/17d86c0acc.js" crossorigin="anonymous"></script>
-  <title>Upload | PAC, Inc - Salug Campus</title>
+  <title>Upload | CodeBuddy Solutions</title>
 </head>
 <body class="uploadBody">
   <div class="container">
     <div class="header">
       <div class="schoolHeader">
-        <img src="/images/paclogo.png" alt="logo">
+        <img class="schoolLogo" src="" alt="logo">
         <div class="lgTitle">
-          <h2>Philippine Advent College, Inc. - Salug Campus</h2>
-          <p>E-Learning Materials</p>
+          <div class="loaderName"></div>
         </div>
         <div class="smTitle">
-          <h2>PAC, Inc. - Salug Campus</h2>
-          <p>E-Learning Materials</p>
+          <div class="loaderName"></div>
         </div>
       </div>
       <div class="user menuBtn">
@@ -148,6 +146,13 @@
           </div>
         </div>
       </div>
+      <div class="uploadProgressCont">
+        <div class="progressBox">
+          <p class="progressCount">Uploading 1 of 10 files</p>
+          <div class="loaderName"></div>
+          <span class="note">Note: Large files may take longer time to upload.</span>
+        </div>
+      </div>
     </div>
   </div>
   
@@ -203,50 +208,68 @@
       
       document.querySelector('.uploadBtn').textContent = 'Uploading...';
       document.querySelector('.uploadBtn').disabled = true;
+      document.querySelector('.uploadProgressCont').style.display = 'flex';
       
-      const formData = new FormData();
-      
-      formData.append('category', category.value);
-      formData.append('department', department.value);
       
       let single = false;
       for (type of uploadTypes) {
         if (type.value == 'single' && type.checked) single = true;
       }
       
+      let count = 0;
+      if (files.files.length > 0) {
+        document.querySelector('.progressCount').textContent = `Uploading 1 of ${files.files.length == 1 ? '1 file' : (files.files.length + ' files')}`;
+        for (let i = 0; i < files.files.length; i++) {
+          try{
+            document.querySelector('.progressCount').textContent = `Uploading ${i + 1} of ${files.files.length == 1 ? '1 file' : (files.files.length + ' files')}`;
+            await uploadFile(files.files[i], single);
+            results.style.visibility = 'visible';
+            count++;
+          } catch (e) {
+            if (count < 1) {
+              alert(e.message);
+              document.querySelector('.uploadBtn').textContent = 'Upload';
+              document.querySelector('.uploadBtn').disabled = false;
+              document.querySelector('.uploadProgressCont').style.display = 'none';
+              break;
+            }
+          }
+        }
+        if (count < 1) return;
+      }
+      
+      results.style.visibility = 'visible';
+      document.querySelector('.uploadBtn').textContent = 'Upload';
+      document.querySelector('.uploadBtn').disabled = false;
+      document.querySelector('.uploadProgressCont').style.display = 'none';
+    }
+    
+    async function uploadFile(file, single) {
+      const formData = new FormData();
+      formData.append('category', category.value);
+      formData.append('department', department.value);
       if (single) formData.append('filename', fileName.value);
       if (thumbnail.files.length > 0 && single) formData.append('thumbnail', thumbnail.files[0]);
-      if (files.files.length > 0) {
-        for (file of files.files) {
-          formData.append('files', file);
-        }
-      }
+      formData.append('files', file);
       
       try{
         const {data} = await axios.post('/files/upload', formData);
-        for (d of data) {
-          results.innerHTML += `
-            <details>
-              <summary>
-                <p>${d.filename}</p>
-                <p class="link">
-                  <span>${window.location.origin + '/files/file?id=' + d.fileId}</span>
-                  <i class="fa-solid fa-copy" onclick="copyLink(this)"></i>
-                </p>
-                <p style="color:${d.error ? 'red">failed' : 'green">success'}</p>
-              </summary>
-              <div class="errorMessage">
-                <p>${d.message ? d.message : ''}</p>
-              </div>
-            </details>`;
-        }
-        results.style.visibility = 'visible';
-        document.querySelector('.uploadBtn').textContent = 'Upload';
-        document.querySelector('.uploadBtn').disabled = false;
+        results.innerHTML += `
+          <details>
+            <summary>
+              <p>${data[0].filename}</p>
+              <p class="link">
+                <span>${window.location.origin + '/files/file?id=' + data[0].fileId}</span>
+                <i class="fa-solid fa-copy" onclick="copyLink(this)"></i>
+              </p>
+              <p style="color:${data[0].error ? 'red">failed' : 'green">success'}</p>
+            </summary>
+            <div class="errorMessage">
+              <p>${data[0].message ? data[0].message : ''}</p>
+            </div>
+          </details>`;
       } catch (e) {
-        alert(e.message);
-        document.querySelector('.uploadBtn').textContent = 'Upload';
-        document.querySelector('.uploadBtn').disabled = false;
+        throw new Error(e.message);
       }
     }
     

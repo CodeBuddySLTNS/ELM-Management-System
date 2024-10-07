@@ -243,6 +243,7 @@ body{
 .header{
   grid-area: head;
   width: 100%;
+  min-height: 66px;
   padding: 6px 20px;
   position: relative;
   z-index: 2;
@@ -256,6 +257,7 @@ body{
   width: 50px;
   aspect-ratio: 1/1;
   border-radius: 50%;
+  display: none;
 }
 .schoolHeader{
   display: flex;
@@ -382,11 +384,16 @@ body{
   width: 100%;
   padding: 0.4rem;
   font-size: 1rem;
+  font-weight: normal;
   font-family: 'Questrial', 'Poppins';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
   border: 0;
   border-radius: 5px;
   background: #ff3f3f94;
-  box-shadow: 0 0 3px rgba(0,0,0,0.5);
+  box-shadow: 0 0 3px rgba(0,0,0,0.3);
 }
 .lgUserInfo .credits p{
   margin: 10px 0 0;
@@ -452,8 +459,10 @@ body{
   height: 100%;
   padding: 50px;
   overflow: auto;
+  position: relative;
 }
 .headName {
+  visibility: hidden;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -483,13 +492,45 @@ body{
   background: #000;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
+.searchFilter{
+  width: 100%;
+  margin: 10px 0 0;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr max-content;
+  gap: 5px;
+  visibility: hidden;
+}
+.searchFilter .categoryFilter {
+  width: 100%;
+  padding-left: 5px;
+  display: flex;
+  gap: 10px;
+  overflow: auto;
+}
+.searchFilter .categoryFilter label {
+  height: 100%;
+  margin: 0;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.searchFilter .departmentFilter{
+  margin: 0;
+}
 
 .documents{
   width: 100%;
   padding: 25px 10px;
+  visibility: hidden;
 }
 .documents h1{
   padding: 10px 0px 15px;
+}
+.documents .categName{
+  font-weight: 600;
 }
 .docs{
   padding: 10px 0px;
@@ -513,13 +554,15 @@ body{
   width: 100%;
   min-height: 1/1;
   max-height: 100%;
+  border-radius: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: var(--c2);
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  box-shadow: 0 0 1px rgba(0,0,0,0.2);
 }
 .docs .resImage span{
   font-weight: bold;
@@ -577,7 +620,7 @@ body{
   justify-content: center;
   align-items: center;
   background: var(--c2);
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -598,6 +641,9 @@ body{
 }
 .descriptions p{
   width: 100%;
+  max-height: 70px;
+  margin: 0 0 8px;
+  overflow: auto;
 }
 .descriptions .infos{
   font-size: 0.85rem;
@@ -744,7 +790,6 @@ body{
   font-weight: 500;
   font-family: 'Poppins';
 }
-
 .results .errorMessage{
   text-align: center;
   font-size: 0.9rem;
@@ -753,6 +798,38 @@ body{
   border-left: 1px solid #000;
   border-right: 1px solid #000;
   border-bottom: 1px solid #000;
+}
+
+.uploadProgressCont{
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: auto;
+  background: rgba(0,0,0,0.1);
+}
+.uploadProgressCont .progressBox{
+  width: 80%;
+  max-width: 450px;
+  padding: 1.5rem 1rem;
+  margin: 60px 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  border-radius: 5px;
+  background: var(--c3);
+  box-shadow: 0 0 3px rgba(0,0,0,0.35);
+}
+.progressBox .note{
+  width: 70%;
+  font-size: 0.65rem;
 }
 
 /* Loading animation */
@@ -769,13 +846,38 @@ body{
   transform: translate(-50%, -50%);
 }
 .loader::before {
-  content: "PAC-SALUG";
+  content: "CodeBuddy-SLTNS";
   color: #0000;
   padding: 0 5px;
   background: inherit;
   background-image: linear-gradient(135deg,#000 calc(50% - 0.5em),#fff 0 calc(50% + 0.5em),#000 0);
   -webkit-background-clip:text;
           background-clip:text;
+}
+
+.loaderName {
+  width: 30px;
+  aspect-ratio: 1;
+  display: grid;
+}
+.loaderName::before,
+.loaderName::after {    
+  content:"";
+  grid-area: 1/1;
+  --c:no-repeat radial-gradient(farthest-side,#25b09b 92%,#0000);
+  background: 
+    var(--c) 50%  0, 
+    var(--c) 50%  100%, 
+    var(--c) 100% 50%, 
+    var(--c) 0    50%;
+  background-size: 7px 7px;
+  animation: l12 1s infinite;
+}
+.loaderName::before {
+  margin: 4px;
+  filter: hue-rotate(45deg);
+  background-size: 5px 5px;
+  animation-timing-function: linear
 }
 
 /* Admin panel */
@@ -861,7 +963,7 @@ body{
 }
 .unauthorized .message{
   width: 100%;
-  max-width: 400px;
+  max-width: 300px;
   height: max-content;
   display: flex;
   flex-direction: column;
@@ -875,8 +977,9 @@ body{
   text-align: center;
 }
 .unauthorized .pacLogo img{
-  width: 100px;
+  width: 80px;
   aspect-ratio: 1/1;
+  border-radius: 50%;
 }
 .unauthorized p{
   margin-bottom: 10px;
@@ -898,6 +1001,9 @@ body{
   padding: 0.25rem 1rem;
 }
 
+@keyframes l12 { 
+  100%{transform: rotate(.5turn)}
+}
 
 @media screen and (max-width: 600px) {
   .container{
@@ -1043,11 +1149,16 @@ body{
     width: 100%;
     padding: 0.4rem;
     font-size: 1rem;
+    font-weight: normal;
     font-family: 'Questrial', 'Poppins';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
     border: 0;
     border-radius: 5px;
     background: #ff3f3f94;
-    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    box-shadow: 0 0 3px rgba(0,0,0,0.3);
   }
   .navbarFooter .credits p{
     padding: 5px 0 1rem;
@@ -1056,6 +1167,7 @@ body{
   }
   
   .header{
+    min-height: 52px;
     padding: 0.35rem 0.65rem 0.35rem 0.5rem;
   }
   .header img{
@@ -1124,6 +1236,8 @@ body{
   }
   .descriptions p{
     font-size: 15.5px;
+    max-height: 85px;
+    overflow: auto;
   }
   
   .readOnlineContainer{
@@ -1147,6 +1261,7 @@ body{
   .formLogo img{
     width: 70px;
     aspect-ratio: 1/1;
+    border-radius: 50%;
   }
   .loginForm {
     width: 100%;

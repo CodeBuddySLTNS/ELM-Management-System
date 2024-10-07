@@ -9,20 +9,18 @@
   
   <!-- FontAwesome icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <title>PAC, Inc - Salug Campus</title>
+  <title>Homepage | CodeBuddy Solutions</title>
 </head>
 <body>
   <div class="container">
     <div class="header">
       <div class="schoolHeader">
-        <img src="/images/paclogo.png" alt="logo">
+        <img class="schoolLogo" src="" alt="logo">
         <div class="lgTitle">
-          <h2>Philippine Advent College, Inc. - Salug Campus</h2>
-          <p>E-Learning Materials</p>
+          <div class="loaderName"></div>
         </div>
         <div class="smTitle">
-          <h2>PAC, Inc. - Salug Campus</h2>
-          <p>E-Learning Materials</p>
+          <div class="loaderName"></div>
         </div>
       </div>
       <div class="user menuBtn">
@@ -104,13 +102,29 @@
           </button>
         </div>
       </div>
+      <div class="searchFilter">
+        <div class="categoryFilter">
+          <label>
+            <input class="categ" type="radio" value="Recent" checked>
+            Recent
+          </label>
+          <label>
+            <input class="categ" type="radio" value="All">
+            All
+          </label>
+        </div>
+        <select class="departmentFilter">
+          <option value="All" selected>All</option>
+          <option value="General">General</option>
+        </select>
+      </div>
+      <div class="loader"></div>
       <div class="documents">
-        <h3>Recently added</h3>
+        <h3 class="categName">Recently added</h3>
         <div class="docs">
           <div class="norecords">
-            <p>No records found.</p>
+            <p>No file found.</p>
           </div>
-          <p class="loader"></p>
 
 <!--
 <a href="/files/file?id=${file._id}">
@@ -145,20 +159,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.5/axios.min.js"></script>
   <script>
     const searchData = document.querySelector('.searchData');
-    const norecords = document.querySelector('.norecords');
-    
-    window.onload = async () => {
-      fetchFiles();
-    }
-    
     searchData.onchange = () => {
       searchFunction();
     }
     
     // Search Feature
     function searchFunction() {
-      norecords.style.display = "none";
-      
       const resTitles = document.querySelectorAll('.resTitle');
     
       let titleArray = [];
@@ -175,32 +181,13 @@
           resTitles[i].parentElement.parentElement.style.display = "block";
           searchResponse.push(true);
         }else{
-          resTitles[i].parentElement.parentElement.style.display = "none";
+          resTitles[i].parentElement.parentElement.style.display = 'none';
         }
       }
-      
-      if(!searchResponse.includes(true)){
-        norecords.style.display = "block";
+      if(searchResponse.includes(true)){
+        document.querySelector('.norecords').style.display = 'none';
       }else{
-        norecords.style.display = "none";
-      }      
-    }
-    
-    async function fetchFiles() {
-      const response = await axios.get('/files/');
-      const files = response.data;
-      document.querySelector('.loader').style.display = 'none';
-      for (file of files) {
-        document.querySelector('.docs').innerHTML += `
-          <a href="/files/file?id=${file._id}">
-            <div class="resPaper">
-              <div class="resImage" style="background-image: url('${file.thumbnail}')">
-                ${file.thumbnail ? '' : '<span>PDF</span>'}
-              </div>
-              <div class="resImage"></div>
-              <p class="resTitle">${file.name}</p>
-            </div>
-          </a>`;
+        document.querySelector('.norecords').style.display = 'block';
       }
     }
 </script>

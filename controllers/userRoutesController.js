@@ -7,7 +7,18 @@ const fetchUserData = async (req, res) => {
   const { userId } = res.locals;
   try {
     const data = await userModel.findOne({ _id: userId });
-    if (!data) return res.status(404).send('User not found.');
+    if (!data) {
+      const userData = new Object();
+      const configs = await configModel.findOne({_id: systemConfig.configId});
+      if (configs) userData.configs = { ...configs._doc }
+      return res.json({
+        ...userData, 
+        loggedIn: false,
+        schoolName: systemConfig.schoolName,
+        schoolLogo: systemConfig.schoolLogo,
+        systemName: systemConfig.systemName
+      });
+    }
     const userData = {
       fullName: data._doc.fullName,
       firstName: data._doc.firstName,
@@ -23,8 +34,14 @@ const fetchUserData = async (req, res) => {
     }
     
     const configs = await configModel.findOne({_id: systemConfig.configId});
-    if (configs) userData.configs = {...configs._doc}
-    res.json(userData);
+    if (configs) userData.configs = { ...configs._doc }
+    res.json({
+      ...userData, 
+      loggedIn: true,
+      schoolName: systemConfig.schoolName,
+      schoolLogo: systemConfig.schoolLogo,
+      systemName: systemConfig.systemName
+    });
   } catch (e) {
     res.status(500);
     console.log(e)

@@ -5,7 +5,7 @@ const systemConfig = require('../config/systemConfig');
 
 const verifyAuth = async (req, res, next) => {
   try {
-    const whiteListed = ["/user", "/file", "/files/file", "/files/readonline", "/files/file/download"];
+    const whiteListed = ["/", "/user", "/files", "/files/file", "/files/readonline", "/files/file/download", "/config/general"];
     const token = req.cookies?.jwt;
     
     if (token) {
@@ -27,9 +27,6 @@ const verifyAuth = async (req, res, next) => {
               }
               return next();
             }
-            systemConfig.onlyVerifiedUsers ?
-              res.status(401).sendFile(path.join(__dirname, '..', 'views', 'unauthorized.html')) :
-              next();
           } else {
             if (whiteListed.includes(req._parsedOriginalUrl.pathname)) return next();
             res.redirect('/auth/login');

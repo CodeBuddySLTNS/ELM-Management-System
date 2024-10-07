@@ -1,5 +1,11 @@
 {
   "configId": "66ed821272006fbb6b88bea5",
+  "schoolName": {
+    "lg": "SCHOOL NAME", 
+    "sm": "SCHOOL NAME"
+  },
+  "schoolLogo": "/images/logo.jpg",
+  "systemName": "E-Learning Materials",
   "DevMode": false,
   "useReactFrontend": false,
   "onlyVerifiedUsers": true,

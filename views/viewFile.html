@@ -9,20 +9,18 @@
 
   <!-- FontAwesome icons -->
   <script src="https://kit.fontawesome.com/17d86c0acc.js" crossorigin="anonymous"></script>
-  <title>PAC, Inc - Salug Campus</title>
+  <title>View | CodeBuddy Solutions</title>
 </head>
 <body>
   <div class="container">
     <div class="header">
       <div class="schoolHeader">
-        <img src="/images/paclogo.png" alt="logo">
+        <img class="schoolLogo" src="" alt="logo">
         <div class="lgTitle">
-          <h2>Philippine Advent College, Inc. - Salug Campus</h2>
-          <p>E-Learning Materials</p>
+          <div class="loaderName"></div>
         </div>
         <div class="smTitle">
-          <h2>PAC, Inc. - Salug Campus</h2>
-          <p>E-Learning Materials</p>
+          <div class="loaderName"></div>
         </div>
       </div>
       <div class="user menuBtn">
@@ -149,7 +147,7 @@
           <p class="infos">Department: ${file.department}</p>
           <p class="infos">Uploader: ${file.uploader}</p>
           <p class="infos">Category: ${file.category}</p>
-          `;
+          <p class="infos">Size: ${file.size}</p>`;
         document.querySelector(".readOnlineLink").href = `/files/readonline?id=${fileId}`;
         const downloadBtn = document.querySelector('.download');
         downloadBtn.onclick = (event) => {

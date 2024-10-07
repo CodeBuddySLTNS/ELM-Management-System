@@ -87,7 +87,7 @@ const upload = async (req, res) => {
     const exist = await fileModel.findOne({fileName: newFileData.filename || file.originalname});
     if (exist) throw new Error('File already exist.');
     if (!fileTypes.includes(file.mimetype)) throw new Error('We only support pdf files.');
-    const { id, name, webContentLink } = await uploadFile(newFileData.filename || file.originalname, filePath, file.mimetype);
+    const { id, name, webContentLink, gdriveThumbnail } = await uploadFile(newFileData.filename || file.originalname, filePath, file.mimetype);
     
     const pdfData = {
       fileName: name,
@@ -100,7 +100,7 @@ const upload = async (req, res) => {
       uploader: acc.firstName + ' ' + acc.lastName,
     }
     
-    if (thumbnailLink) pdfData.thumbnail = thumbnailLink;
+    if (thumbnailLink || gdriveThumbnail) pdfData.thumbnail = thumbnailLink || gdriveThumbnail;
     
     const {_id} = await fileModel.create(pdfData);
     
@@ -138,21 +138,58 @@ async function uploadFile(fileName, filePath, mimetype){
       parents: systemConfig.gdriveFolder, // A folder ID to which file will be uploaded
     }
     
-    const uploaded = await drive.files.create({
+    const {data} = await drive.files.create({
       resource: fileMetaData,
       media: {
         body: fs.createReadStream(filePath), // files that will get uploaded
         mimeType: mimetype
       },
-      fields: 'id, name, hasThumbnail, thumbnailLink'
+      fields: 'id, name'
      });
     
-    if (!uploaded) return null;
+    if (!data) return null;
     
-    const webContentLink = await generatePublicUrl(uploaded.data.id, drive);
+    const result = await generatePublicUrl(data.id, drive);
     
-    const fileData = {...uploaded.data, webContentLink}
+    const fileData = {
+      ...data, 
+      webContentLink: result.webContentLink,
+      gdriveThumbnail: result.thumbnailLink
+    }
+    
     return fileData;
+    
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+// A Function that will add thumbnails to all file that has none
+async function addThumbnails() {
+  try {
+    const drive = google.drive({version: 'v3', auth: await authorize()});
+    
+    const files = await fileModel.find({});
+    
+    for (file of files) {
+      if (file.thumbnail) {
+        const {data} = await drive.files.get({
+          fileId: file.fileId,
+          fields: "hasThumbnail, thumbnailLink, size"
+        });
+        if (data.hasThumbnail) {
+          const size = ((parseInt(data.size, 10) / 1024) / 1024).toFixed(2) + ' mb';
+          const filter = { _id: file._id };
+          const update = { size, thumbnail: data.thumbnailLink };
+          const config = { new: false };
+          const updated = await fileModel.findOneAndUpdate(filter, update, config);
+          console.log('new......', data.thumbnailLink);
+          console.log('old......',updated.thumbnail);
+        }
+      }
+    }
+    
     
   } catch (e) {
     console.log(e);
@@ -186,11 +223,12 @@ async function generatePublicUrl(fileId, drive){
       }
     })
     
-    const result = await drive.files.get({
+    const {data} = await drive.files.get({
       fileId: fileId,
-      fields: 'webContentLink'
+      fields: 'webContentLink, hasThumbnail, thumbnailLink'
     });
-    return result.data.webContentLink;
+    
+    return data;
   } catch (e) {
     console.log('Error generating public url:', e.message);
     return null;
