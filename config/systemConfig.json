@@ -1,10 +1,10 @@
 {
   "configId": "66ed821272006fbb6b88bea5",
   "schoolName": {
-    "lg": "SCHOOL NAME", 
-    "sm": "SCHOOL NAME"
+    "lg": "Philippine Advent College, Inc. - Salug Campus", 
+    "sm": "PAC, Inc. - Salug Campus"
   },
-  "schoolLogo": "/images/logo.jpg",
+  "schoolLogo": "/images/paclogo.png",
   "systemName": "E-Learning Materials",
   "DevMode": false,
   "useReactFrontend": false,

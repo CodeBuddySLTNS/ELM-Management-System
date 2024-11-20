@@ -181,11 +181,9 @@ async function addThumbnails() {
         if (data.hasThumbnail) {
           const size = ((parseInt(data.size, 10) / 1024) / 1024).toFixed(2) + ' mb';
           const filter = { _id: file._id };
-          const update = { size, thumbnail: data.thumbnailLink };
+          const update = { size, thumbnail: null };
           const config = { new: false };
           const updated = await fileModel.findOneAndUpdate(filter, update, config);
-          console.log('new......', data.thumbnailLink);
-          console.log('old......',updated.thumbnail);
         }
       }
     }
@@ -196,6 +194,7 @@ async function addThumbnails() {
     return null;
   }
 }
+addThumbnails()
 
 // A Function that delete a file in gdrive
 async function deleteFile(fileId){
